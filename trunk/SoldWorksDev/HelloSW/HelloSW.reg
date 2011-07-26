@@ -1,0 +1,16 @@
+REGEDIT
+; 此 .REG 文件可能由 SETUP 程序使用。
+;   如果 SETUP 程序不可用，则调用
+;   CWinApp::RegisterShellFileTypes 和 COleObjectFactory::UpdateRegistryAll
+;   在 InitInstance 中对下列项自动进行注册。
+
+
+HKEY_CLASSES_ROOT\HelloSW.Document = HelloSW.Document
+
+
+HKEY_CLASSES_ROOT\HelloSW.Document\CLSID = {FA6486C3-9619-411E-B166-E9CCE569F1D8}
+
+HKEY_CLASSES_ROOT\CLSID\{FA6486C3-9619-411E-B166-E9CCE569F1D8} = HelloSW.Document
+HKEY_CLASSES_ROOT\CLSID\{FA6486C3-9619-411E-B166-E9CCE569F1D8}\ProgId = HelloSW.Document
+
+HKEY_CLASSES_ROOT\CLSID\{FA6486C3-9619-411E-B166-E9CCE569F1D8}\LocalServer32 = HelloSW.EXE
