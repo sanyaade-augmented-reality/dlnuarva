@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include "CSldWorks.h"
 
 class CHelloSWView : public CView
 {
@@ -52,7 +53,19 @@ protected:
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+	afx_msg void OnButtonStrartsw();
+	afx_msg void OnButtonOpenASM();
 	DECLARE_MESSAGE_MAP()
+public:
+	//Use ATL smart pointers 
+	CComPtr<ISldWorks> swApp; 
+	CComPtr<IModelDoc2> swModel;
+	CComPtr<IModelDocExtension> swDocExt;
+	CComPtr<IAssemblyDoc> swAssy;
+	CComPtr<IComponent2> swComponent;
+	CComPtr<IFeature> mateFeature;
+	CComPtr<IModelDoc2> tmpObj;
+	CComPtr<IMate2> swMate;
 };
 
 #ifndef _DEBUG  // HelloSWView.cpp 中的调试版本

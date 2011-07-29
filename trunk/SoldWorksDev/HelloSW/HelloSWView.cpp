@@ -21,6 +21,7 @@
 
 #include "HelloSWDoc.h"
 #include "HelloSWView.h"
+#include "MainFrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -38,6 +39,8 @@ BEGIN_MESSAGE_MAP(CHelloSWView, CView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CHelloSWView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
+	ON_COMMAND(ID_BUTTON_OPENASM, &CHelloSWView::OnButtonOpenASM)
+	ON_COMMAND(ID_BUTTON_StrartSW, &CHelloSWView::OnButtonStrartsw)
 END_MESSAGE_MAP()
 
 // CHelloSWView 构造/析构
@@ -62,7 +65,7 @@ BOOL CHelloSWView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CHelloSWView 绘制
 
-void CHelloSWView::OnDraw(CDC* /*pDC*/)
+void CHelloSWView::OnDraw(CDC* pDC)
 {
 	CHelloSWDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
@@ -70,6 +73,7 @@ void CHelloSWView::OnDraw(CDC* /*pDC*/)
 		return;
 
 	// TODO: 在此处为本机数据添加绘制代码
+	pDC->TextOutW(50, 50, _T("Hello SolidWorks"));
 }
 
 
@@ -135,3 +139,68 @@ CHelloSWDoc* CHelloSWView::GetDocument() const // 非调试版本是内联的
 
 
 // CHelloSWView 消息处理程序
+
+//To open the assembly file.
+void CHelloSWView::OnButtonOpenASM()
+{
+	//Check
+	if (!swApp) {
+		MessageBox(_T("请先启动SolidWorks"), _T("错误"));
+		return;
+	}
+
+	CString fileStr;
+	long lErrors;
+	long lWarnings;
+	long lMateError;
+
+	//Trace
+	((CMainFrame*)GetParent())->SetMessageText(_T("正在打开装配体文件。"));
+
+	CFileDialog fileDlg(TRUE);
+	//To set file filter.
+	fileDlg.m_ofn.lpstrFilter = LPCTSTR(_T("SolidWorks Assembly File(*.SLDASM)\0*.SLDASM"));
+	fileDlg.m_ofn.lpstrTitle = _T("打开装配体文件");
+	if (fileDlg.DoModal() == IDOK) {
+		fileStr = fileDlg.GetPathName();
+		//Trace
+		((CMainFrame*)GetParent())->SetMessageText(fileStr);
+	} else {
+		return;
+	}
+
+	//Open the assembly document
+	CComBSTR sAssemblyName(fileStr);
+	CComBSTR sDefaultConfiguration(_T("Default"));
+	swModel = swApp->OpenDoc6(
+		BSTR(sAssemblyName), 
+		2, //swDocASSEMBLY,
+		0,//swOpenDocOptions_Silent, 
+		BSTR(sDefaultConfiguration), 
+		&lErrors, 
+		&lWarnings
+	);
+}
+
+// To Start SolidWorks
+void CHelloSWView::OnButtonStrartsw()
+{ 
+	//Trace
+	((CMainFrame*)GetParent())->SetMessageText(_T("正在打开SolidWorks"));
+
+	//Initialize COM
+	HRESULT hres = CoInitialize(NULL);
+	//Create an instance of SolidWorks
+	hres = swApp.CoCreateInstance(__uuidof(SldWorks), NULL, CLSCTX_LOCAL_SERVER);
+
+	if (SUCCEEDED(hres)) {
+		((CMainFrame*)GetParent())->SetMessageText(_T("打开SolidWorks成功！"));
+		VARIANT_BOOL visibility;
+		swApp->get_Visible(&visibility);
+		swApp->put_Visible(TRUE);
+	} else {
+		((CMainFrame*)GetParent())->SetMessageText(_T("打开SolidWorks失败！"));
+		//Uninitialize COM
+		CoUninitialize();
+	}
+}

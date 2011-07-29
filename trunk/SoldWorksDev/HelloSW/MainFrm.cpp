@@ -34,7 +34,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CMainFrame::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CMainFrame::OnFilePrintPreview)
 	ON_UPDATE_COMMAND_UI(ID_FILE_PRINT_PREVIEW, &CMainFrame::OnUpdateFilePrintPreview)
-	ON_COMMAND(ID_BUTTON_StrartSW, &CMainFrame::OnButtonStrartsw)
+	//ON_COMMAND(ID_BUTTON_StrartSW, &CMainFrame::OnButtonStrartsw)
 END_MESSAGE_MAP()
 
 // CMainFrame 构造/析构
@@ -43,8 +43,6 @@ CMainFrame::CMainFrame()
 {
 	// TODO: 在此添加成员初始化代码
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_WINDOWS_7);
-	//Initialize COM
-	CoInitialize(NULL);
 }
 
 CMainFrame::~CMainFrame()
@@ -217,13 +215,35 @@ void CMainFrame::OnUpdateFilePrintPreview(CCmdUI* pCmdUI)
 	pCmdUI->SetCheck(IsPrintPreview());
 }
 
-
+// To Start SolidWorks
+/*
 void CMainFrame::OnButtonStrartsw()
 { 
-	//Create an instance of SolidWorks
-	HRESULT hres = swApp.CoCreateInstance(__uuidof(SldWorks), NULL, CLSCTX_LOCAL_SERVER);
+	SetMessageText(_T("正在打开SolidWorks"));
 
-	VARIANT_BOOL visibility;
-	swApp->get_Visible(&visibility);
-	swApp->put_Visible(TRUE);
+	//Initialize COM
+	HRESULT hres = CoInitialize(NULL);
+	//Create an instance of SolidWorks
+	hres = swApp.CoCreateInstance(__uuidof(SldWorks), NULL, CLSCTX_LOCAL_SERVER);
+
+	if (SUCCEEDED(hres)) {
+		SetMessageText(_T("打开SolidWorks成功！"));
+		VARIANT_BOOL visibility;
+		swApp->get_Visible(&visibility);
+		swApp->put_Visible(TRUE);
+	} else {
+		SetMessageText(_T("打开SolidWorks失败！"));
+		//Uninitialize COM
+		CoUninitialize();
+	}
+}
+*/
+
+// 设置状态栏文本
+void CMainFrame::SetMessageText(LPCTSTR text)
+{
+	m_wndStatusBar.GetElement(0)->SetText(text);
+	m_wndStatusBar.GetElement(0)->Redraw();
+	m_wndStatusBar.RecalcLayout();
+	m_wndStatusBar.RedrawWindow();
 }

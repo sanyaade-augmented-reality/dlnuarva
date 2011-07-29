@@ -14,7 +14,6 @@
 
 #pragma once
 
-#include "CSldWorks.h"
 
 class CMainFrame : public CFrameWndEx
 {
@@ -28,6 +27,8 @@ public:
 
 // 操作
 public:
+	// 设置状态栏文本
+	void SetMessageText(LPCTSTR text);
 
 // 重写
 public:
@@ -55,13 +56,11 @@ protected:
 	afx_msg void OnFilePrint();
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnUpdateFilePrintPreview(CCmdUI* pCmdUI);
-	afx_msg void OnButtonStrartsw();
+	//afx_msg void OnButtonStrartsw();
 	DECLARE_MESSAGE_MAP()
 
 //成员
 public:
-	//Use ATL smart pointers 
-	CComPtr<ISldWorks> swApp; 
 };
 
 
