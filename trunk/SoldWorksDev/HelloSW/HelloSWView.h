@@ -29,6 +29,10 @@ public:
 // 操作
 public:
 
+//方法
+private:
+	int TraverseChildren(long RecurseLevel, CString* MyString, IComponent* pComponent, ISldWorks* m_pSldWorks) ;
+	void GetModelAssembly(ISldWorks* m_pSldWorks);
 // 重写
 public:
 	virtual void OnDraw(CDC* pDC);  // 重写以绘制该视图
@@ -72,4 +76,3 @@ public:
 inline CHelloSWDoc* CHelloSWView::GetDocument() const
    { return reinterpret_cast<CHelloSWDoc*>(m_pDocument); }
 #endif
-

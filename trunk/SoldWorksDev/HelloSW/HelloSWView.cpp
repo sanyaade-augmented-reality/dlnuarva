@@ -180,6 +180,13 @@ void CHelloSWView::OnButtonOpenASM()
 		&lErrors, 
 		&lWarnings
 	);
+
+	//Trace
+	((CMainFrame*)GetParent())->SetMessageText(_T("成功打开装配体文件" + fileStr));
+
+	//Trace
+	((CMainFrame*)GetParent())->SetMessageText(_T("正在遍历装配体文件" + fileStr));
+	GetModelAssembly(swApp);
 }
 
 // To Start SolidWorks
@@ -202,5 +209,92 @@ void CHelloSWView::OnButtonStrartsw()
 		((CMainFrame*)GetParent())->SetMessageText(_T("打开SolidWorks失败！"));
 		//Uninitialize COM
 		CoUninitialize();
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Function: TraverseChildren
+// Arguments: RecurseLevel - Level of recursion
+//    MyString - Textural record of assembly
+//    pComponent - Component to traverse
+// Return: Number of children
+// Description: Perform any operations specific to the component, then
+//    if the component has children, recursively call
+//    this function for each child.
+//////////////////////////////////////////////////////////////////////////
+int CHelloSWView::TraverseChildren(long RecurseLevel, CString* MyString, IComponent* pComponent, ISldWorks* m_pSldWorks) {
+	IComponent** pChildren = NULL;
+	int   nChildren;
+	int   i;
+	BSTR   Name;
+	HRESULT  hres = S_OK;
+	IModelDoc*  pModelDoc = NULL;
+
+	// Retrieve the component name
+	if(RecurseLevel==0) {
+		// Special case of top-level components
+		hres = m_pSldWorks->get_IActiveDoc(&pModelDoc);
+		if(S_OK == hres || pModelDoc != NULL)
+			Name = pModelDoc->GetTitle();
+	} else {
+		// Get the component name
+		hres = pComponent->get_Name(&Name);
+	}
+
+	if(S_OK == hres && Name != NULL) {
+		CString tempstr;
+		for( i=1; i<=RecurseLevel; i++) {
+			tempstr += " ";
+		}
+
+		CString Tmp(Name);
+		tempstr += Tmp;
+		tempstr += "\r\n";
+		*MyString = *MyString + tempstr;
+	}
+	RecurseLevel++;
+	nChildren = pComponent->IGetChildrenCount();
+
+	// Check if this component has children
+	if (S_OK == hres || nChildren > 0) {
+		pChildren = new IComponent*[nChildren];
+		pChildren = pComponent->IGetChildren();
+
+		if(S_OK == hres) {
+			for (i=0; i<nChildren; i++){
+				TraverseChildren(RecurseLevel, MyString, pChildren[i], m_pSldWorks);
+				pChildren[i]->Release();
+			}
+		}
+		delete [] pChildren;
+	}
+
+	RecurseLevel--;
+	return nChildren;
+}
+
+void CHelloSWView::GetModelAssembly(ISldWorks* m_pSldWorks) {
+	CComPtr<IConfiguration> pConfiguration = NULL;
+	CComPtr<IComponent> pRootComponent = NULL;
+	CComPtr<IModelDoc2> pModelDoc = NULL;
+	HRESULT hres = S_OK;
+	long RecurseLevel = 0;
+
+	hres = m_pSldWorks->get_IActiveDoc2(&pModelDoc );  
+ 
+	// Retrieve model document pointer
+	if(S_OK != hres || pModelDoc == NULL)
+		return;  
+
+	// Get the active configuration and root component
+	if ((pConfiguration = pModelDoc->IGetActiveConfiguration())) {
+		if ((pRootComponent = pConfiguration->IGetRootComponent())) {
+			CString MyString;
+			TraverseChildren(RecurseLevel, &MyString, pRootComponent, swApp);
+			//pRootComponent->Release();
+			// Display the structure in a message box
+			MessageBox(MyString);
+		}
+		//pConfiguration->Release();
 	}
 }
