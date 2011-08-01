@@ -31,7 +31,7 @@ public:
 
 //·½·¨
 private:
-	int TraverseChildren(long RecurseLevel, CString* MyString, IComponent* pComponent, ISldWorks* m_pSldWorks) ;
+	int TraverseChildren(long RecurseLevel, CString* MyString, IComponent2* pComponent, ISldWorks* m_pSldWorks) ;
 	void GetModelAssembly(ISldWorks* m_pSldWorks);
 // ÖØÐ´
 public:

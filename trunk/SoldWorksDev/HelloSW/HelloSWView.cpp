@@ -73,7 +73,7 @@ void CHelloSWView::OnDraw(CDC* pDC)
 		return;
 
 	// TODO: 在此处为本机数据添加绘制代码
-	pDC->TextOutW(50, 50, _T("Hello SolidWorks"));
+	pDC->TextOutW(50, 50, L"Hello SolidWorks");
 }
 
 
@@ -145,22 +145,23 @@ void CHelloSWView::OnButtonOpenASM()
 {
 	//Check
 	if (!swApp) {
-		MessageBox(_T("请先启动SolidWorks"), _T("错误"));
+		MessageBox(L"请先启动SolidWorks", L"错误");
 		return;
 	}
 
 	CString fileStr;
 	long lErrors;
 	long lWarnings;
-	long lMateError;
+	//long lMateError;
+	HRESULT hres;
 
 	//Trace
-	((CMainFrame*)GetParent())->SetMessageText(_T("正在打开装配体文件。"));
+	((CMainFrame*)GetParent())->SetMessageText(L"正在打开装配体文件。");
 
 	CFileDialog fileDlg(TRUE);
 	//To set file filter.
-	fileDlg.m_ofn.lpstrFilter = LPCTSTR(_T("SolidWorks Assembly File(*.SLDASM)\0*.SLDASM"));
-	fileDlg.m_ofn.lpstrTitle = _T("打开装配体文件");
+	fileDlg.m_ofn.lpstrFilter = LPCTSTR(L"SolidWorks Assembly File(*.SLDASM)\0*.SLDASM");
+	fileDlg.m_ofn.lpstrTitle = L"打开装配体文件";
 	if (fileDlg.DoModal() == IDOK) {
 		fileStr = fileDlg.GetPathName();
 		//Trace
@@ -171,21 +172,28 @@ void CHelloSWView::OnButtonOpenASM()
 
 	//Open the assembly document
 	CComBSTR sAssemblyName(fileStr);
-	CComBSTR sDefaultConfiguration(_T("Default"));
-	swModel = swApp->OpenDoc6(
+	CComBSTR sDefaultConfiguration(L"Default");
+	hres = swApp->OpenDoc6(
 		BSTR(sAssemblyName), 
-		2, //swDocASSEMBLY,
-		0,//swOpenDocOptions_Silent, 
+		swDocASSEMBLY,
+		swOpenDocOptions_Silent, 
 		BSTR(sDefaultConfiguration), 
 		&lErrors, 
-		&lWarnings
+		&lWarnings,
+		&swModel
 	);
 
+	if (hres == S_OK) {
+		//Trace
+		((CMainFrame*)GetParent())->SetMessageText(L"成功打开装配体文件" + fileStr);
+	} else {
+		//Trace
+		((CMainFrame*)GetParent())->SetMessageText(L"打开装配体文件" + fileStr + "失败！");
+		MessageBox(L"打开装配体文件" + fileStr + "失败！");
+	}
+	
 	//Trace
-	((CMainFrame*)GetParent())->SetMessageText(_T("成功打开装配体文件" + fileStr));
-
-	//Trace
-	((CMainFrame*)GetParent())->SetMessageText(_T("正在遍历装配体文件" + fileStr));
+	((CMainFrame*)GetParent())->SetMessageText(L"正在遍历装配体文件" + fileStr);
 	GetModelAssembly(swApp);
 }
 
@@ -193,7 +201,7 @@ void CHelloSWView::OnButtonOpenASM()
 void CHelloSWView::OnButtonStrartsw()
 { 
 	//Trace
-	((CMainFrame*)GetParent())->SetMessageText(_T("正在打开SolidWorks"));
+	((CMainFrame*)GetParent())->SetMessageText(L"正在打开SolidWorks");
 
 	//Initialize COM
 	HRESULT hres = CoInitialize(NULL);
@@ -201,7 +209,7 @@ void CHelloSWView::OnButtonStrartsw()
 	hres = swApp.CoCreateInstance(__uuidof(SldWorks), NULL, CLSCTX_LOCAL_SERVER);
 
 	if (SUCCEEDED(hres)) {
-		((CMainFrame*)GetParent())->SetMessageText(_T("打开SolidWorks成功！"));
+		((CMainFrame*)GetParent())->SetMessageText(L"打开SolidWorks成功！");
 		VARIANT_BOOL visibility;
 		swApp->get_Visible(&visibility);
 		swApp->put_Visible(TRUE);
@@ -222,23 +230,23 @@ void CHelloSWView::OnButtonStrartsw()
 //    if the component has children, recursively call
 //    this function for each child.
 //////////////////////////////////////////////////////////////////////////
-int CHelloSWView::TraverseChildren(long RecurseLevel, CString* MyString, IComponent* pComponent, ISldWorks* m_pSldWorks) {
-	IComponent** pChildren = NULL;
+int CHelloSWView::TraverseChildren(long RecurseLevel, CString* MyString, IComponent2* pComponent, ISldWorks* m_pSldWorks) {
+	IComponent2** pChildren = NULL;
 	int   nChildren;
 	int   i;
-	BSTR   Name;
+	BSTR  Name;
 	HRESULT  hres = S_OK;
-	IModelDoc*  pModelDoc = NULL;
+	IModelDoc2*  pModelDoc = NULL;
 
 	// Retrieve the component name
 	if(RecurseLevel==0) {
 		// Special case of top-level components
-		hres = m_pSldWorks->get_IActiveDoc(&pModelDoc);
+		hres = m_pSldWorks->get_IActiveDoc2(&pModelDoc);
 		if(S_OK == hres || pModelDoc != NULL)
 			Name = pModelDoc->GetTitle();
 	} else {
 		// Get the component name
-		hres = pComponent->get_Name(&Name);
+		Name = pComponent->Name;
 	}
 
 	if(S_OK == hres && Name != NULL) {
@@ -249,7 +257,7 @@ int CHelloSWView::TraverseChildren(long RecurseLevel, CString* MyString, ICompon
 
 		CString Tmp(Name);
 		tempstr += Tmp;
-		tempstr += "\r\n";
+		tempstr += L"\r\n";
 		*MyString = *MyString + tempstr;
 	}
 	RecurseLevel++;
@@ -257,8 +265,10 @@ int CHelloSWView::TraverseChildren(long RecurseLevel, CString* MyString, ICompon
 
 	// Check if this component has children
 	if (S_OK == hres || nChildren > 0) {
-		pChildren = new IComponent*[nChildren];
-		pChildren = pComponent->IGetChildren();
+		pChildren = new IComponent2*[nChildren];
+		IComponent2* temp =  pComponent->IGetChildren();
+		//pChildren = pComponent->IGetChildren();
+		//_variant_t children =  pComponent->GetChildren();
 
 		if(S_OK == hres) {
 			for (i=0; i<nChildren; i++){
@@ -275,7 +285,7 @@ int CHelloSWView::TraverseChildren(long RecurseLevel, CString* MyString, ICompon
 
 void CHelloSWView::GetModelAssembly(ISldWorks* m_pSldWorks) {
 	CComPtr<IConfiguration> pConfiguration = NULL;
-	CComPtr<IComponent> pRootComponent = NULL;
+	CComPtr<IComponent2> pRootComponent = NULL;
 	CComPtr<IModelDoc2> pModelDoc = NULL;
 	HRESULT hres = S_OK;
 	long RecurseLevel = 0;
@@ -288,7 +298,7 @@ void CHelloSWView::GetModelAssembly(ISldWorks* m_pSldWorks) {
 
 	// Get the active configuration and root component
 	if ((pConfiguration = pModelDoc->IGetActiveConfiguration())) {
-		if ((pRootComponent = pConfiguration->IGetRootComponent())) {
+		if ((pRootComponent = pConfiguration->GetRootComponent3(TRUE))) {
 			CString MyString;
 			TraverseChildren(RecurseLevel, &MyString, pRootComponent, swApp);
 			//pRootComponent->Release();
