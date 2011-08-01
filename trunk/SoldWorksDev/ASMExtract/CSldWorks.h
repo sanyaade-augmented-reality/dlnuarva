@@ -1,7 +1,7 @@
 // 从类型库向导中用“添加类”创建的计算机生成的 IDispatch 包装类
 
-#import "D:\\PROGRA~1\\SOLIDW~1\\SOLIDW~1\\sldworks.tlb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
-#import "D:\\PROGRA~1\\SOLIDW~1\\SOLIDW~1\\swconst.tlb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
+#import "D:\\Program Files\\solidworks\\SolidWorks\\sldworks.tlb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
+#import "D:\\Program Files\\solidworks\\SolidWorks\\swconst.tlb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
 // CSldWorks 包装类
 
 class CSldWorks : public COleDispatchDriver

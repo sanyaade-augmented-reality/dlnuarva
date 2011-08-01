@@ -26,9 +26,13 @@ void CloseDocuments(ISldWorks* swApp);
 void GetModelAssembly(ISldWorks* m_pSldWorks);
 int TraverseChildren(long RecurseLevel, CString* MyString, IComponent2* pComponent, ISldWorks* m_pSldWorks);
 void Do();
+void SelectionComponent(ISldWorks * m_pSldWorks);
+void UserGetSelectedObjectsComponent3();
+
 
 using namespace std;
 
+//程序入口
 int _tmain(int argc, TCHAR* argv[], TCHAR* envp[]) {
 	int nRetCode = 0;
 
@@ -82,6 +86,8 @@ void Do() {
 
 		//Resolve Assembly
 		cout << "正在解析装配体文件。" << endl;
+		//测试 SelectionComponent(swApp);
+
 		GetModelAssembly(swApp);
 		/*
 		IComponent2* swComponent = NULL;
@@ -103,15 +109,67 @@ void Do() {
 	}
 }
 
+//选择component类型的对象
+void SelectionComponent(ISldWorks * m_pSldWorks)
+{
+	//使solidworks可见可控制
+	m_pSldWorks->put_UserControl(VARIANT_TRUE);
+	m_pSldWorks->put_Visible(VARIANT_TRUE);
+
+	CComPtr<IModelDoc2>  swModel;
+	m_pSldWorks->get_IActiveDoc2(&swModel);
+
+	if(! swModel){
+		return ;
+	}
+
+	CComBSTR  strModelTitle;
+	long      nDocumentType;  // swDocumentTypes_e
+	//获取model名和类型
+	swModel->GetTitle(&strModelTitle);
+	swModel->GetType(&nDocumentType);
+
+	CComPtr<ISelectionMgr>   swSelectionManager;
+	long                   lNumSelections;
+	long                   nSelectionType;     // swSelectType_e 
+	CComPtr<IDispatch>       swSelectedObject;
+	CComPtr<IComponent2>     swComponet;
+
+	//获取model的选择管理器，与选择数量
+	swModel->get_ISelectionManager(&swSelectionManager);
+	swSelectionManager->GetSelectedObjectCount2(-1, &lNumSelections);
+
+	//从头到尾判断选择管理的类型
+	for (int i = 1; i <= lNumSelections; i++) {
+		swSelectionManager->GetSelectedObject6(i, -1, &swSelectedObject);
+		swSelectionManager->GetSelectedObjectType3(i, -1, &nSelectionType);
+
+		switch (nSelectionType) {
+		case swSelectType_e::swSelCOMPONENTS://判断选择的是否是components类型的数据
+			swSelectedObject.QueryInterface(&swComponet);
+			
+			CComBSTR bname;
+			swComponet->get_Name(&bname);
+			CString name(bname);
+
+			cout << name << endl;
+			break;
+
+		}
+	}
+
+}
+
 //Open assembly
 void OpenAssembly(ISldWorks* swApp, IModelDoc2** swModel)
 {
-	CComBSTR sFileName(L"D:\\MyWorks\\Virtual Assembly\\SolidWorks Study\\mill.SLDASM");
+	CComBSTR sFileName(L"C:\\Users\\dongye\\Desktop\\装配体3.SLDASM");
 	CComBSTR sDefaultConfiguration(L"Default");
 
 	long fileerror, filewarning;
 
 	IModelDoc2* swModelAssembly;
+	//打开文件
 	hres = swApp->OpenDoc6(
 		sFileName, 
 		swDocASSEMBLY, 
@@ -141,7 +199,7 @@ void GetModelAssembly(ISldWorks* m_pSldWorks) {
 
 	// Get the active configuration and root component
 	if ((hres = pModelDoc->IGetActiveConfiguration(&pConfiguration)) == S_OK) {
-		if ((hres = pConfiguration->GetRootComponent3(TRUE, &pRootComponent)) == S_OK) {
+		if ((hres = pConfiguration->IGetRootComponent2(&pRootComponent)) == S_OK) {
 			CString MyString;
 			TraverseChildren(RecurseLevel, &MyString, pRootComponent, m_pSldWorks);
 			cout << MyString << endl;
@@ -161,7 +219,6 @@ void GetModelAssembly(ISldWorks* m_pSldWorks) {
 //    this function for each child.
 //////////////////////////////////////////////////////////////////////////
 int TraverseChildren(long RecurseLevel, CString* MyString, IComponent2* pComponent, ISldWorks* m_pSldWorks) {
-	IComponent2** pChildren;
 	int   nChildren;
 	int   i;
 	BSTR  Name;
@@ -172,14 +229,15 @@ int TraverseChildren(long RecurseLevel, CString* MyString, IComponent2* pCompone
 	if(RecurseLevel==0) {
 		// Special case of top-level components
 		hres = m_pSldWorks->get_IActiveDoc2(&pModelDoc);
-		if(S_OK == hres || pModelDoc != NULL)
+		pModelDoc->put_Visible(TRUE);
+		if(S_OK == hres || pModelDoc != NULL)//获取文件名
 			hres = pModelDoc->GetTitle(&Name);
 	} else {
 		// Get the component name
 		hres = pComponent->get_Name2(&Name);
 	}
 
-	if(S_OK == hres && Name != NULL) {
+	if(S_OK == hres && Name != NULL) { //条件成立则文件打开成功或者已获取rootComponent
 		CString tempstr;
 		for( i=1; i<=RecurseLevel; i++) {
 			tempstr += " ";
@@ -190,27 +248,52 @@ int TraverseChildren(long RecurseLevel, CString* MyString, IComponent2* pCompone
 		tempstr += L"\r\n";
 		*MyString = *MyString + tempstr;
 	}
-	RecurseLevel++;
-	hres = pComponent->IGetChildrenCount(&nChildren);
 
+	RecurseLevel++;
+	VARIANT componentChildren;
+	HRESULT state = pComponent->GetChildren(&componentChildren);
+
+	if(componentChildren.vt == VT_EMPTY ||  V_VT(&componentChildren) == VT_NULL ){
+		return 1;
+	}
+
+	SAFEARRAY* psa = V_ARRAY(&componentChildren);
+	LPDISPATCH * componentChildrenArray;
+	state = SafeArrayAccessData(psa, (void **) &componentChildrenArray);
+	long highIndex;
+	SafeArrayGetUBound(psa,1,&highIndex);
+	long childrenCount = highIndex + 1;
+	for(int i = 0; i<childrenCount; i++){
+		IComponent2* m_childComponent;
+		componentChildrenArray[i]->QueryInterface(IID_IComponent2,(void **)&m_childComponent);
+		/*componentChildrenArray[i]->AddRef();
+		VARIANT_BOOL isSuppressed;
+		state = m_childComponent->IsSuppressed(&isSuppressed);*/
+		TraverseChildren(RecurseLevel, MyString, m_childComponent, m_pSldWorks);
+	}
+	state = SafeArrayUnaccessData(psa);
+	state = SafeArrayDestroy(psa);
+	/*hres = pComponent->IGetChildrenCount(&nChildren);
+	
 	// Check if this component has children
 	if (S_OK == hres && nChildren > 0) {
-		pChildren =  (IComponent2**)new IComponent2*[nChildren];
+		pChildren =  (IComponent2**) new IComponent2*[nChildren];
 		hres =  pComponent->IGetChildren(pChildren);
 		
 		if(S_OK == hres) {
 			for (i=0; i<nChildren; i++){
+				
 				TraverseChildren(RecurseLevel, MyString, *pChildren + i * sizeof(IComponent2*), m_pSldWorks);
 				pChildren[i]->Release();
 			}
 		}
 
 		if (*pChildren != NULL)
-			delete []pChildren;
+		delete []pChildren;
 	}
-
+	*/
 	RecurseLevel--;
-	return nChildren;
+	return childrenCount;
 }
 
 // Traverse FeatureManager design tree to get the
