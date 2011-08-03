@@ -30,6 +30,28 @@ namespace ASMExtractDotNet {
     }
 
     class SolidWorksMacro {
+        public void TraverseFeatures2(Feature swFeat, long nLevel) {
+            if (swFeat == null) {
+                return;
+            }
+            
+            Feature swSubFeat;
+            string sPadStr = "";
+            long i = 0;
+
+            for (i = 0; i < nLevel; i++) {
+                sPadStr = sPadStr + "\t";
+            }
+
+            Debug.Print(sPadStr + swFeat.Name + " [" + swFeat.GetTypeName2() + "]");
+            if ((swSubFeat = swFeat.IGetFirstSubFeature()) != null) {
+                TraverseFeatures2(swSubFeat, nLevel + 1);
+            }
+            if ((swFeat = swFeat.IGetNextFeature()) != null) {
+                TraverseFeatures2(swFeat, nLevel);
+            }
+        }
+        
         public void TraverseFeatures(Feature swFeat, long nLevel) {
             Feature swSubFeat;
             string sPadStr = " ";
@@ -58,7 +80,8 @@ namespace ASMExtractDotNet {
         public void TraverseComponentFeatures(Component2 swComp, long nLevel) {
             Feature swFeat;
             swFeat = (Feature)swComp.FirstFeature();
-            TraverseFeatures(swFeat, nLevel);
+            //TraverseFeatures(swFeat, nLevel);
+            TraverseFeatures2(swFeat, nLevel);
         }
 
         public void TraverseComponent(Component2 swComp, long nLevel) {
@@ -103,7 +126,7 @@ namespace ASMExtractDotNet {
             myStopwatch.Start();
             Debug.Print("File = " + swModel.GetPathName());
 
-            TraverseModelFeatures(swModel, 1);
+            //TraverseModelFeatures(swModel, 1);
 
             if (swModel.GetType() == (int)swDocumentTypes_e.swDocASSEMBLY) {
                 TraverseComponent(swRootComp, 1);
