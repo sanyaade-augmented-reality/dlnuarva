@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Diagnostics;
 
-using SldWorks;
-using SwConst;
+using SolidWorks.Interop.sldworks;
+using SolidWorks.Interop.swconst;
 
-
-namespace ASMExtractDotNet {
+namespace ASMDocTest {
     /// <summary>
     /// 对SolidWorks Assembly模型进行提取的类
     /// 目前版本不适用于拥有子装配体的文件。
@@ -20,7 +18,7 @@ namespace ASMExtractDotNet {
         /// <summary>
         /// SolidWorks的全局对象
         /// </summary>
-        private SldWorks.SldWorks _swApp = null;
+        private SldWorks _swApp = null;
 
         /// <summary>
         /// 模型文件对象
@@ -44,7 +42,7 @@ namespace ASMExtractDotNet {
         /// <summary>
         /// 获取或设置SldWorks对象
         /// </summary>
-        public SldWorks.SldWorks SwApp {
+        public SldWorks SwApp {
             get {
                 return _swApp;
             }
@@ -80,7 +78,7 @@ namespace ASMExtractDotNet {
         ///     初始化成员变量并空值和文件类型进行检查。
         /// </summary>
         /// <param name="swApp"></param>
-        public SolidWorksASMExtractor(SldWorks.SldWorks swApp) {
+        public SolidWorksASMExtractor(SldWorks swApp) {
             if (swApp == null) {
                 throw new Exception("参数swApp的值不能为空。");
             }
