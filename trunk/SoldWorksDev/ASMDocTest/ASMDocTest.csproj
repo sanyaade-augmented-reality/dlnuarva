@@ -52,11 +52,16 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SolidWorksASMExtractor.cs" />
+    <Compile Include="SWDataModel\SWBody.cs" />
     <Compile Include="SWDataModel\SWBoundingBox.cs" />
     <Compile Include="SWDataModel\SWComponent.cs" />
+    <Compile Include="SWDataModel\SWCurve.cs" />
+    <Compile Include="SWDataModel\SWEdge.cs" />
     <Compile Include="SWDataModel\SWFace.cs" />
     <Compile Include="SWDataModel\SWMate.cs" />
     <Compile Include="SWDataModel\SWPoint.cs" />
+    <Compile Include="SWDataModel\SWSurface.cs" />
+    <Compile Include="SWDataModel\SWTriangle.cs" />
     <Compile Include="Test.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

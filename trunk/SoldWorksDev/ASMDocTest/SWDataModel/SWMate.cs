@@ -4,6 +4,6 @@ using System.Linq;
 using System.Text;
 
 namespace SWDataModel {
-    class SWMate {
+    public class SWMate {
     }
 }

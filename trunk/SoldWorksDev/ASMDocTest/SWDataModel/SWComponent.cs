@@ -7,7 +7,7 @@ namespace SWDataModel {
     /// <summary>
     /// 组件类型
     /// </summary>
-    class SWComponent {
+    public class SWComponent {
         
         #region 成员变量
         /// <summary>

@@ -7,7 +7,7 @@ namespace SWDataModel {
     /// <summary>
     /// 包围盒
     /// </summary>
-    class SWBoundingBox {
+    public class SWBoundingBox {
         /// <summary>
         /// 下对角点
         /// </summary>

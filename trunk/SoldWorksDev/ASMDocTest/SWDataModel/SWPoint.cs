@@ -5,9 +5,9 @@ using System.Text;
 
 namespace SWDataModel {
     /// <summary>
-    /// 三维空间中的点
+    /// 三维空间中的点，单位mm
     /// </summary>
-    class SWPoint {
+    public class SWPoint {
         public double X {
             get;
             set;

@@ -159,36 +159,33 @@ namespace ASMDocTest {
                 //发生异常，说明该组件（根组件）没有包围盒
                 box = null;
             }
+            swComponent.BoundingBox = CreateSWBoundingBox(box);
 
-            if (box != null) {
-                //乘以1000转换到mm进制
-                swComponent.BoundingBox = new SWBoundingBox() {
-                    LowerCorner = new SWPoint() {
-                        X = box[0] * 1000,
-                        Y = box[1] * 1000,
-                        Z = box[2] * 1000
-                    },
-                    UpperCorner = new SWPoint() {
-                        X = box[3] * 1000,
-                        Y = box[4] * 1000,
-                        Z = box[5] * 1000
-                    }
-                };
-            }
-
+            //提取Body
             object bodyInfo;
             object[] bodies = component.GetBodies3((int)swBodyType_e.swSolidBody, out bodyInfo);
             if (bodies != null) {
-                foreach (object obj in bodies) {
-                    Body2 body = (Body2)obj;
-                    int faceCount = body.GetFaceCount();
+                foreach (object objBody in bodies) {
+                    SWBody swBody = new SWBody();
+                    Body2 body = (Body2)objBody;
+                    
+                    swBody.Name = body.Name;
+
+                    //提取Face
                     Face2 face = body.GetFirstFace();
-
                     while (face != null) {
-
-                        OutPutSurfaceType(face.GetSurface());
-
+                        swBody.Faces.Add(CreateSWFace(face));
                         face = face.GetNextFace();
+                    }
+
+                    //提取Edge
+                    object[] edges = body.GetEdges();
+                    if (edges != null) {
+                        foreach (object objEdge in edges) {
+                            if (objEdge != null) {
+                                swBody.Edges.Add(CreateSWEdge((Edge)objEdge));
+                            }
+                        }
                     }
                 }
             }
@@ -202,12 +199,244 @@ namespace ASMDocTest {
                 swComponent.SubComponents.Add(newComponent); 
             }
         }
+        
+        /// <summary>
+        /// 创建边对象
+        /// </summary>
+        /// <param name="edge"></param>
+        /// <returns></returns>
+        private static SWEdge CreateSWEdge(Edge edge) {
+            if (edge == null)
+                return null;
+
+            SWEdge swEdge = new SWEdge();
+
+            //ID
+            swEdge.ID = edge.GetID();
+
+            //参数
+            double[] par = edge.GetCurveParams();
+            if (par != null) {
+                for (int i = 0; i < par.Length; ++i) {
+                    swEdge.Params[i] = par[i];
+                }
+            }
+
+            //几何信息
+            swEdge.Curve = CreateSWCurve(edge.GetCurve());
+
+            return swEdge;
+        }
+
+        /// <summary>
+        /// 创建边的几何信息对象
+        /// </summary>
+        /// <param name="curve"></param>
+        /// <returns></returns>
+        private static SWCurve CreateSWCurve(Curve curve) {
+            if (curve == null)
+                return null;
+
+            SWCurve swCurve = new SWCurve();
+            int i = 0;
+            double[] pars = null;
+
+            switch (curve.Identity()) {
+                case (int)swCurveTypes_e.LINE_TYPE:
+                    swCurve.CurveType = SWCurveType.LINE;
+                    pars = curve.LineParams;
+                    for (i = 0; i < 6; ++i) {
+                        swCurve.Params[i] = pars[i];
+                    }
+                    break;
+                case (int)swCurveTypes_e.CIRCLE_TYPE:
+                    swCurve.CurveType = SWCurveType.CIRCLE;
+                    pars = curve.CircleParams;
+                    for (i = 0; i < 7; ++i) {
+                        swCurve.Params[i] = pars[i];
+                    }
+                    break;
+                case (int)swCurveTypes_e.ELLIPSE_TYPE:
+                    swCurve.CurveType = SWCurveType.ELLIPSE;
+                    pars = curve.GetEllipseParams();
+                    for (i = 0; i < 11; ++i) {
+                        swCurve.Params[i] = pars[i];
+                    }
+                    break;
+                case (int)swCurveTypes_e.BCURVE_TYPE:
+                    swCurve.CurveType = SWCurveType.BCURVE;
+                    break;
+                case (int)swCurveTypes_e.INTERSECTION_TYPE:
+                    swCurve.CurveType = SWCurveType.INTERSECTION;
+                    break;
+                case (int)swCurveTypes_e.SPCURVE_TYPE:
+                    swCurve.CurveType = SWCurveType.SPCURVE;
+                    break;
+                case (int)swCurveTypes_e.TRIMMED_TYPE:
+                    swCurve.CurveType = SWCurveType.TRIMMED;
+                    break;
+                case (int)swCurveTypes_e.CONSTPARAM_TYPE:
+                    swCurve.CurveType = SWCurveType.CONST_PARAM;
+                    break;
+            }
+
+            return swCurve;
+        }
+        /// <summary>
+        /// 创建面对象
+        /// </summary>
+        /// <param name="face"></param>
+        /// <returns></returns>
+        private static SWFace CreateSWFace(Face2 face) {
+            if (face == null)
+                return null;
+
+            //复制Face信息
+            SWFace swFace = new SWFace();
+
+            //ID
+            swFace.ID = face.GetFaceId();
+            //包围盒
+            swFace.BoundingBox = CreateSWBoundingBox(face.GetBox());
+
+            //三角面片
+            int tessTriCount = face.GetTessTriangleCount();
+            float[] arrTriangles = face.GetTessTriangles(false);
+
+            //OutPutTessTriangles(tessTriCount, arrTriangles);
+            if (arrTriangles != null) {
+                for (int i = 0; i < tessTriCount; i += 9) {
+                    swFace.TessTriangles.Add(CreateSWTriangle(arrTriangles, i));
+                }
+            }
+
+            //几何信息
+            swFace.Surface = CreateSWSurface(face.GetSurface());
+
+            return swFace;
+        }
+
+        /// <summary>
+        /// 创建面的几何信息对象
+        /// </summary>
+        /// <param name="surface"></param>
+        /// <returns></returns>
+        private static SWSurface CreateSWSurface(Surface surface) {
+            if (surface == null)
+                return null;
+            
+            int i = 0;
+            SWSurface swSurface = new SWSurface();
+            
+            switch (surface.Identity()) {
+                case (int)swSurfaceTypes_e.PLANE_TYPE:
+                    swSurface.SurfaceType = SWSurfaceType.PLANE;
+                    for (i = 0; i < 6; ++i) {
+                        swSurface.Params[i] = surface.PlaneParams[i];
+                    }
+                    break;
+                case (int)swSurfaceTypes_e.SPHERE_TYPE:
+                    swSurface.SurfaceType = SWSurfaceType.SPHERE;
+                    for (i = 0; i < 4; ++i) {
+                        swSurface.Params[i] = surface.SphereParams[i];
+                    }
+                    break;
+                case (int)swSurfaceTypes_e.CYLINDER_TYPE:
+                    swSurface.SurfaceType = SWSurfaceType.CYLINDER;
+                    for (i = 0; i < 7; ++i) {
+                        swSurface.Params[i] = surface.CylinderParams[i];
+                    }
+                    break;
+                case (int)swSurfaceTypes_e.CONE_TYPE:
+                    swSurface.SurfaceType = SWSurfaceType.CONE;
+                    for (i = 0; i < 8; ++i) {
+                        swSurface.Params[i] = surface.ConeParams[i];
+                    }
+                    break;
+                case (int)swSurfaceTypes_e.TORUS_TYPE:
+                    swSurface.SurfaceType = SWSurfaceType.TORUS;
+                    for (i = 0; i < 8; ++i) {
+                        swSurface.Params[i] = surface.TorusParams[i];
+                    }
+                    break;
+                case (int)swSurfaceTypes_e.SREV_TYPE:
+                    swSurface.SurfaceType = SWSurfaceType.SREV;
+                    break;
+                case (int)swSurfaceTypes_e.BLEND_TYPE:
+                    swSurface.SurfaceType = SWSurfaceType.BLEND;
+                    break;
+                case (int)swSurfaceTypes_e.BSURF_TYPE:
+                    swSurface.SurfaceType = SWSurfaceType.BSURF;
+                    break;
+                case (int)swSurfaceTypes_e.EXTRU_TYPE:
+                    swSurface.SurfaceType = SWSurfaceType.EXTRU;
+                    break;
+                case (int)swSurfaceTypes_e.OFFSET_TYPE:
+                    swSurface.SurfaceType = SWSurfaceType.OFFSET;
+                    break;
+            }
+
+            return swSurface;
+        }
+
+        /// <summary>
+        /// 创建三角面片对象
+        /// </summary>
+        /// <param name="arrPoints"></param>
+        /// <param name="startIndex"></param>
+        /// <returns></returns>
+        private static SWTriangle CreateSWTriangle(float[] arrPoints, int startIndex) {
+            SWTriangle swTriangle = new SWTriangle() {
+                A = new SWPoint() {
+                    X = arrPoints[startIndex + 0],
+                    Y = arrPoints[startIndex + 1],
+                    Z = arrPoints[startIndex + 2]
+                },
+                B = new SWPoint() {
+                    X = arrPoints[startIndex + 3],
+                    Y = arrPoints[startIndex + 4],
+                    Z = arrPoints[startIndex + 5]
+                },
+                C = new SWPoint() {
+                    X = arrPoints[startIndex + 6],
+                    Y = arrPoints[startIndex + 7],
+                    Z = arrPoints[startIndex + 8]
+                }
+            };
+            return swTriangle;
+        }
+
+        /// <summary>
+        /// 包围盒
+        /// </summary>
+        /// <param name="box"></param>
+        /// <returns></returns>
+        private static SWBoundingBox CreateSWBoundingBox(double[] box) {
+            if (box == null)
+                return null;
+
+            //乘以1000转换到mm进制
+            SWBoundingBox swBoundingBox = new SWBoundingBox() {
+                LowerCorner = new SWPoint() {
+                    X = box[0] * 1000,
+                    Y = box[1] * 1000,
+                    Z = box[2] * 1000
+                },
+                UpperCorner = new SWPoint() {
+                    X = box[3] * 1000,
+                    Y = box[4] * 1000,
+                    Z = box[5] * 1000
+                }
+            };
+
+            return swBoundingBox;
+        }
 
         /// <summary>
         ///  输出配合类型
         /// </summary>
         /// <param name="typeOfMate"></param>
-        public static void OutPutMateType(int typeOfMate) {
+        private static void OutPutMateType(int typeOfMate) {
             switch (typeOfMate) {
                 case 0:
                     Debug.Print(" Mate type: Coincident");
@@ -286,7 +515,7 @@ namespace ASMDocTest {
         /// 输出基础面类型
         /// </summary>
         /// <param name="typeOfSurface"></param>
-        public static void OutPutSurfaceType(Surface surface) {
+        private static void OutPutSurfaceType(Surface surface) {
             if (surface == null) {
                 return;
             }
@@ -346,6 +575,25 @@ namespace ASMDocTest {
                 case (int)swSurfaceTypes_e.OFFSET_TYPE:
                     Debug.Print("偏移曲面:");
                     break;  
+            }
+        }
+
+        /// <summary>
+        /// 输出面的三角面片数组
+        /// </summary>
+        /// <param name="tessTrianglesCount"></param>
+        /// <param name="arrTriangles"></param>
+        private static void OutPutTessTriangles(int tessTriCount, float[] arrTriangles) {
+            Debug.Print("" + tessTriCount);
+            if (arrTriangles != null) {
+                for (int i = 0; i < tessTriCount; ++i) {
+                    Debug.Print("" + arrTriangles[i * 9 + 0] + " " +
+                        arrTriangles[i * 9 + 1] + " " + arrTriangles[i * 9 + 2]);
+                    Debug.Print("" + arrTriangles[i * 9 + 3] + " " +
+                        arrTriangles[i * 9 + 4] + " " + arrTriangles[i * 9 + 5]);
+                    Debug.Print("" + arrTriangles[i * 9 + 6] + " " +
+                        arrTriangles[i * 9 + 7] + " " + arrTriangles[i * 9 + 8]);
+                }
             }
         }
     }

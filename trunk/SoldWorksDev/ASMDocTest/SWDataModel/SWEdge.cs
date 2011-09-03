@@ -5,9 +5,10 @@ using System.Text;
 
 namespace SWDataModel {
     /// <summary>
-    /// 三维面
+    /// 边
     /// </summary>
-    public class SWFace {
+    public class SWEdge {
+        
         #region 成员变量
 
         /// <summary>
@@ -16,19 +17,16 @@ namespace SWDataModel {
         private int _id;
 
         /// <summary>
-        /// 包围盒
+        /// 几何信息对象
         /// </summary>
-        private SWBoundingBox _boundingBox = null;
+        private SWCurve _curve = null;
 
         /// <summary>
-        /// 三角面片
+        /// 参数
+        /// 说明：
+        ///     http://help.solidworks.com/2010/English/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.iedge~getcurveparams2.html
         /// </summary>
-        private List<SWTriangle> _tessTriangles = new List<SWTriangle>();
-
-        /// <summary>
-        /// 几何信息
-        /// </summary>
-        private SWSurface _surface = null;
+        private double[] _params = new double[11];
 
         #endregion
 
@@ -47,41 +45,32 @@ namespace SWDataModel {
         }
 
         /// <summary>
-        /// 包围盒
-        /// </summary>
-        public SWBoundingBox BoundingBox {
-            get {
-                return _boundingBox;
-            }
-            set {
-                _boundingBox = value;
-            }
-        }
-
-        /// <summary>
-        /// 三角面片
-        /// </summary>
-        public List<SWTriangle> TessTriangles {
-            get {
-                return _tessTriangles;
-            }
-            set {
-                _tessTriangles = value;
-            }
-        }
-
-        /// <summary>
         /// 几何信息
         /// </summary>
-        public SWSurface Surface {
+        public SWCurve Curve {
             get {
-                return _surface;
+                return _curve;
             }
             set {
-                _surface = value;
+                _curve = value;
+            }
+        }
+
+        /// <summary>
+        /// 参数
+        /// 说明：
+        ///     http://help.solidworks.com/2010/English/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.iedge~getcurveparams2.html
+        /// </summary>
+        public double[] Params {
+            get {
+                return _params;
+            }
+            set {
+                _params = value;
             }
         }
 
         #endregion
+    
     }
 }
