@@ -30,6 +30,11 @@ namespace SWDataModel {
         /// </summary>
         private SWBoundingBox _boundingBox = null;
 
+        /// <summary>
+        /// Bodies
+        /// </summary>
+        private List<SWBody> _bodies = new List<SWBody>();
+
         #endregion
 
         #region 属性
@@ -79,6 +84,18 @@ namespace SWDataModel {
             }
             set {
                 _boundingBox = value;
+            }
+        }
+
+        /// <summary>
+        /// Bodies
+        /// </summary>
+        public List<SWBody> Bodies {
+            get {
+                return _bodies;
+            }
+            set {
+                _bodies = value;
             }
         }
 

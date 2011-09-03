@@ -25,6 +25,11 @@ namespace SWDataModel {
         /// </summary>
         private List<SWEdge> _edges = new List<SWEdge>();
 
+        /// <summary>
+        /// Body包含的顶点
+        /// </summary>
+        private List<SWVertex> _vertices = new List<SWVertex>();
+
         #endregion
 
         #region 属性
@@ -62,6 +67,18 @@ namespace SWDataModel {
             }
             set {
                 _edges = value;
+            }
+        }
+
+        /// <summary>
+        /// Body所包含的顶点
+        /// </summary>
+        public List<SWVertex> Vertices {
+            get {
+                return _vertices;
+            }
+            set {
+                _vertices = value;
             }
         }
 

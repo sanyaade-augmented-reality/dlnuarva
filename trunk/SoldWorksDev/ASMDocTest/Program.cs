@@ -102,13 +102,13 @@ namespace ASMDocTest {
         public static void ExtractTree() {
             ModelDoc2 swModel = default(ModelDoc2);
             Component2 rootComponent = default(Component2);
-            SWComponent newComponent = default(SWComponent);
+            SWComponent swComponent = default(SWComponent);
 
             swModel = swApp.ActiveDoc;
             rootComponent = swModel.ConfigurationManager.ActiveConfiguration.GetRootComponent3(true);
-            newComponent = new SWComponent();
+            swComponent = new SWComponent();
 
-            CreateTree(rootComponent, ref newComponent);
+            CreateTree(rootComponent, ref swComponent);
 
             Debug.Print("");
         }
@@ -166,27 +166,7 @@ namespace ASMDocTest {
             object[] bodies = component.GetBodies3((int)swBodyType_e.swSolidBody, out bodyInfo);
             if (bodies != null) {
                 foreach (object objBody in bodies) {
-                    SWBody swBody = new SWBody();
-                    Body2 body = (Body2)objBody;
-                    
-                    swBody.Name = body.Name;
-
-                    //提取Face
-                    Face2 face = body.GetFirstFace();
-                    while (face != null) {
-                        swBody.Faces.Add(CreateSWFace(face));
-                        face = face.GetNextFace();
-                    }
-
-                    //提取Edge
-                    object[] edges = body.GetEdges();
-                    if (edges != null) {
-                        foreach (object objEdge in edges) {
-                            if (objEdge != null) {
-                                swBody.Edges.Add(CreateSWEdge((Edge)objEdge));
-                            }
-                        }
-                    }
+                    swComponent.Bodies.Add(CreateSWBody((Body2)objBody));
                 }
             }
             
@@ -199,7 +179,73 @@ namespace ASMDocTest {
                 swComponent.SubComponents.Add(newComponent); 
             }
         }
-        
+
+        /// <summary>
+        /// 创建SWBody对象
+        /// </summary>
+        /// <param name="body"></param>
+        /// <returns></returns>
+        private static SWBody CreateSWBody(Body2 body) {
+            if (body == null)
+                return null;
+
+            SWBody swBody = new SWBody();
+
+            swBody.Name = body.Name;
+
+            //提取Face
+            Face2 face = body.GetFirstFace();
+            while (face != null) {
+                swBody.Faces.Add(CreateSWFace(face));
+                face = face.GetNextFace();
+            }
+
+            //提取Edge
+            object[] edges = body.GetEdges();
+            if (edges != null) {
+                foreach (object objEdge in edges) {
+                    if (objEdge != null) {
+                        swBody.Edges.Add(CreateSWEdge((Edge)objEdge));
+                    }
+                }
+            }
+
+            //提取Vertex
+            object[] vertices = body.GetVertices();
+            if (vertices != null) {
+                foreach (object objVertex in vertices) {
+                    if (objVertex != null) {
+                        swBody.Vertices.Add(CreateSWVertex((Vertex)objVertex));
+                    }
+                }
+            }
+
+            return swBody;
+        }
+
+        /// <summary>
+        /// 创建顶点对象
+        /// </summary>
+        /// <param name="vertex"></param>
+        /// <returns></returns>
+        private static SWVertex CreateSWVertex(Vertex vertex) {
+            if (vertex == null)
+                return null;
+
+            SWVertex swVertex = new SWVertex();
+            double[] point = vertex.GetPoint();
+
+            if (point != null) {
+                swVertex.Point = new SWPoint() {
+                    X = point[0],
+                    Y = point[1],
+                    Z = point[2]
+                };
+            }
+
+            return swVertex;
+        }
+
         /// <summary>
         /// 创建边对象
         /// </summary>
@@ -418,18 +464,27 @@ namespace ASMDocTest {
             //乘以1000转换到mm进制
             SWBoundingBox swBoundingBox = new SWBoundingBox() {
                 LowerCorner = new SWPoint() {
-                    X = box[0] * 1000,
-                    Y = box[1] * 1000,
-                    Z = box[2] * 1000
+                    X = box[0],
+                    Y = box[1],
+                    Z = box[2]
                 },
                 UpperCorner = new SWPoint() {
-                    X = box[3] * 1000,
-                    Y = box[4] * 1000,
-                    Z = box[5] * 1000
+                    X = box[3],
+                    Y = box[4],
+                    Z = box[5]
                 }
             };
 
             return swBoundingBox;
+        }
+
+        /// <summary>
+        /// 米转换到毫米
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        private static double CreateM2MM(double x) {
+            return x * 1000;
         }
 
         /// <summary>
