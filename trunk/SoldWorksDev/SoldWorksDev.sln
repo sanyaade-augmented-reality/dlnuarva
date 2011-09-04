@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASMExtractDotNet", "ASMExtractDotNet\ASMExtractDotNet.csproj", "{FDF0799A-FF2E-4378-9474-C8D7C3707D5E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASMDocTest", "ASMDocTest\ASMDocTest.csproj", "{03F68837-81F2-4A0D-ADC5-E59CBA108A35}"
 EndProject
 Global
@@ -21,18 +19,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FDF0799A-FF2E-4378-9474-C8D7C3707D5E}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{FDF0799A-FF2E-4378-9474-C8D7C3707D5E}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{FDF0799A-FF2E-4378-9474-C8D7C3707D5E}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{FDF0799A-FF2E-4378-9474-C8D7C3707D5E}.Debug|Win32.ActiveCfg = Debug|x86
-		{FDF0799A-FF2E-4378-9474-C8D7C3707D5E}.Debug|x86.ActiveCfg = Debug|x86
-		{FDF0799A-FF2E-4378-9474-C8D7C3707D5E}.Debug|x86.Build.0 = Debug|x86
-		{FDF0799A-FF2E-4378-9474-C8D7C3707D5E}.Release|Any CPU.ActiveCfg = Release|x86
-		{FDF0799A-FF2E-4378-9474-C8D7C3707D5E}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{FDF0799A-FF2E-4378-9474-C8D7C3707D5E}.Release|Mixed Platforms.Build.0 = Release|x86
-		{FDF0799A-FF2E-4378-9474-C8D7C3707D5E}.Release|Win32.ActiveCfg = Release|x86
-		{FDF0799A-FF2E-4378-9474-C8D7C3707D5E}.Release|x86.ActiveCfg = Release|x86
-		{FDF0799A-FF2E-4378-9474-C8D7C3707D5E}.Release|x86.Build.0 = Release|x86
 		{03F68837-81F2-4A0D-ADC5-E59CBA108A35}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{03F68837-81F2-4A0D-ADC5-E59CBA108A35}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{03F68837-81F2-4A0D-ADC5-E59CBA108A35}.Debug|Mixed Platforms.Build.0 = Debug|x86
