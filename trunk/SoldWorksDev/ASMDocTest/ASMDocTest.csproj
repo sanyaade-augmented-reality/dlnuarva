@@ -59,6 +59,7 @@
     <Compile Include="SWDataModel\SWEdge.cs" />
     <Compile Include="SWDataModel\SWFace.cs" />
     <Compile Include="SWDataModel\SWMate.cs" />
+    <Compile Include="SWDataModel\SWMateEntity.cs" />
     <Compile Include="SWDataModel\SWPoint.cs" />
     <Compile Include="SWDataModel\SWSurface.cs" />
     <Compile Include="SWDataModel\SWTriangle.cs" />

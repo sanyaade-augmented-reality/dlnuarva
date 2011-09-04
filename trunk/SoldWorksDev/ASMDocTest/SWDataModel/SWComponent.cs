@@ -35,6 +35,11 @@ namespace SWDataModel {
         /// </summary>
         private List<SWBody> _bodies = new List<SWBody>();
 
+        /// <summary>
+        /// 配合
+        /// </summary>
+        private List<SWMate> _mates = null;
+
         #endregion
 
         #region 属性
@@ -96,6 +101,18 @@ namespace SWDataModel {
             }
             set {
                 _bodies = value;
+            }
+        }
+
+        /// <summary>
+        /// 配合
+        /// </summary>
+        public List<SWMate> Mates {
+            get {
+                return _mates;
+            }
+            set {
+                _mates = value;
             }
         }
 

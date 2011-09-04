@@ -8,6 +8,8 @@ using SolidWorks.Interop.sldworks;
 using SolidWorks.Interop.swconst;
 
 using SWDataModel;
+using System.Xml.Serialization;
+using System.IO;
 
 namespace ASMDocTest {
     class Program {
@@ -110,13 +112,19 @@ namespace ASMDocTest {
 
             CreateTree(rootComponent, ref swComponent);
 
+            //序列化
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(SWComponent));
+            StreamWriter file = new StreamWriter(@"" + swComponent.Name + ".xml");
+            xmlSerializer.Serialize(file, swComponent);
+            file.Close();
+
             Debug.Print("");
         }
 
         /// <summary>
         /// 获取组件的特征
         /// </summary>
-        public static List<Feature> GetFeaturesOfComponent(Component2 component) {
+        private static List<Feature> GetFeaturesOfComponent(Component2 component) {
             if (component == null)  {
                 return null;
             }
@@ -145,12 +153,19 @@ namespace ASMDocTest {
                 return;
             }
 
-            //复制组件相关信息
+            /////////复制组件相关信息///////////
 
             //名称
             swComponent.Name = component.Name2;
+            
             //是否根组件
             swComponent.IsRoot = component.IsRoot();
+            
+            //提取配合,存放在RootComponent节点
+            if (swComponent.IsRoot) {
+                swComponent.Mates = GetSWMatesOfRootComponent(component);
+            }
+            
             //包围盒
             double[] box = null;
             try {
@@ -170,6 +185,8 @@ namespace ASMDocTest {
                 }
             }
             
+            
+
             //继续遍历
             object[] subComponents = component.GetChildren();
 
@@ -178,6 +195,203 @@ namespace ASMDocTest {
                 CreateTree((Component2)obj, ref newComponent);
                 swComponent.SubComponents.Add(newComponent); 
             }
+        }
+
+        /// <summary>
+        /// 获得根组件的配合
+        /// </summary>
+        /// <param name="rootComponent"></param>
+        /// <returns></returns>
+        private static List<SWMate> GetSWMatesOfRootComponent(Component2 rootComponent) {
+            if (rootComponent == null)
+                return null;
+
+            List<Mate2> mates = GetMatesOfRootComponent(rootComponent);
+            List<SWMate> swMates = new List<SWMate>();
+
+            if (mates != null) {
+                foreach (Mate2 mate in mates) {
+                    swMates.Add(CreateSWMate(mate));
+                }
+            }
+            
+            return swMates;
+        }
+
+        /// <summary>
+        /// 创建SWMate对象
+        /// </summary>
+        /// <param name="mate"></param>
+        /// <returns></returns>
+        private static SWMate CreateSWMate(Mate2 mate) {
+            if (mate == null)
+                return null;
+
+            int entityCount = 0;
+            SWMate swMate = new SWMate();
+
+            //角度和距离是否反向
+            swMate.Flipped = mate.Flipped;
+            //最大差值
+            swMate.MaxVariation = mate.MaximumVariation;
+            //最小差值
+            swMate.MinVariation = mate.MinimumVariation;
+            //配合相关实体
+            entityCount = mate.GetMateEntityCount();
+            for (int i = 0; i < entityCount; ++i) {
+                swMate.MateEntities.Add(CreateSWMateEntity((MateEntity2)mate.MateEntity(i)));
+            }
+
+            #region switch mate type 
+
+            switch (mate.Type) {
+                case (int)swMateType_e.swMateANGLE:
+                    swMate.MateType = SWMateType.ANGLE;
+                    break;
+                case (int)swMateType_e.swMateCAMFOLLOWER:
+                    swMate.MateType = SWMateType.CAMFOLLOWER;
+                    break;
+                case (int)swMateType_e.swMateCOINCIDENT:
+                    swMate.MateType = SWMateType.COINCIDENT;
+                    break;
+                case (int)swMateType_e.swMateCONCENTRIC:
+                    swMate.MateType = SWMateType.CONCENTRIC;
+                    break;
+                case (int)swMateType_e.swMateCOORDINATE:
+                    swMate.MateType = SWMateType.COORDINATE;
+                    break;
+                case (int)swMateType_e.swMateDISTANCE:
+                    swMate.MateType = SWMateType.DISTANCE;
+                    break;
+                case (int)swMateType_e.swMateGEAR:
+                    swMate.MateType = SWMateType.GEAR;
+                    break;
+                case (int)swMateType_e.swMateHINGE:
+                    swMate.MateType = SWMateType.HINGE;
+                    break;
+                case (int)swMateType_e.swMateLINEARCOUPLER:
+                    swMate.MateType = SWMateType.LINEARCOUPLER;
+                    break;
+                case (int)swMateType_e.swMateLOCK:
+                    swMate.MateType = SWMateType.LOCK;
+                    break;
+                case (int)swMateType_e.swMateLOCKTOSKETCH:
+                    swMate.MateType = SWMateType.LOCKTOSKETCH;
+                    break;
+                case (int)swMateType_e.swMateMAXMATES:
+                    swMate.MateType = SWMateType.MAXMATES;
+                    break;
+                case (int)swMateType_e.swMatePARALLEL:
+                    swMate.MateType = SWMateType.PARALLEL;
+                    break;
+                case (int)swMateType_e.swMatePATH:
+                    swMate.MateType = SWMateType.PATH;
+                    break;
+                case (int)swMateType_e.swMatePERPENDICULAR:
+                    swMate.MateType = SWMateType.PERPENDICULAR;
+                    break;
+                case (int)swMateType_e.swMateRACKPINION:
+                    swMate.MateType = SWMateType.RACKPINION;
+                    break;
+                case (int)swMateType_e.swMateSCREW:
+                    swMate.MateType = SWMateType.SCREW;
+                    break;
+                case (int)swMateType_e.swMateSLIDER:
+                    swMate.MateType = SWMateType.SLIDER;
+                    break;
+                case (int)swMateType_e.swMateSLOT:
+                    swMate.MateType = SWMateType.SLOT;
+                    break;
+                case (int)swMateType_e.swMateSYMMETRIC:
+                    swMate.MateType = SWMateType.SYMMETRIC;
+                    break;
+                case (int)swMateType_e.swMateTANGENT:
+                    swMate.MateType = SWMateType.TANGENT;
+                    break;
+                case (int)swMateType_e.swMateUNIVERSALJOINT:
+                    swMate.MateType = SWMateType.UNIVERSALJOINT;
+                    break;
+                case (int)swMateType_e.swMateUNKNOWN:
+                    swMate.MateType = SWMateType.UNKNOWN;
+                    break;
+                case (int)swMateType_e.swMateWIDTH:
+                    swMate.MateType = SWMateType.WIDTH;
+                    break;
+            }
+
+            #endregion
+
+            return swMate;
+        }
+
+        /// <summary>
+        /// 创建SWMateEntity对象
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        private static SWMateEntity CreateSWMateEntity(MateEntity2 entity) {
+            if (entity == null)
+                return null;
+
+            SWMateEntity swMateEntity = new SWMateEntity();
+
+            #region switch mate entity type
+
+            switch (entity.ReferenceType) {
+                case (int)swSelectType_e.swSelEDGES:
+                    swMateEntity.MateEntityType = SWMateEntityType.LINE;
+                    break;
+                case (int)swSelectType_e.swSelFACES:
+                    swMateEntity.MateEntityType = SWMateEntityType.PLANE;
+                    break;
+                case (int)swSelectType_e.swSelVERTICES:
+                    swMateEntity.MateEntityType = SWMateEntityType.POINT;
+                    break;
+                default:
+                    throw new Exception("未知的配合实体类型");
+            }
+
+            #endregion
+
+            for (int i = 0; i < 8; ++i) {
+                swMateEntity.Params[i] = entity.EntityParams[i];
+            }
+
+            return swMateEntity;
+        }
+        /// <summary>
+        /// 获取根组件的配合(MATE)
+        /// </summary>
+        /// <param name="rootComponent"></param>
+        /// <returns></returns>
+        private static List<Mate2> GetMatesOfRootComponent(Component2 rootComponent) {
+            if (rootComponent == null)
+                return null;
+
+            Feature feature = null;
+            ModelDoc2 doc = rootComponent.GetModelDoc2();
+            List<Mate2> mates = new List<Mate2>();
+            Mate2 pMate = null;
+
+            //获得配合组（MateGroup）
+            feature = doc.FirstFeature();
+            while (feature != null) {
+                if (feature.GetTypeName2() == "MateGroup")
+                    break;
+                feature = feature.GetNextFeature();
+            }
+
+            // 从配合组的子特征中提取配合
+            if (feature != null) {
+                feature = feature.GetFirstSubFeature();
+                while (feature != null) {
+                    pMate = feature.GetSpecificFeature2();
+                    mates.Add(pMate);
+                    feature = feature.GetNextSubFeature();
+                }
+            }
+
+            return mates;
         }
 
         /// <summary>
