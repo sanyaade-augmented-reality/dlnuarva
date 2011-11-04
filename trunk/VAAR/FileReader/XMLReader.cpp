@@ -28,14 +28,14 @@ namespace vaar_file {
 __declspec(dllexport) char* XMLReader::Read(const char* file_path) {
 	try
 	{
-		XMLPlatformUtils::Initialize();
+		xercesc::XMLPlatformUtils::Initialize();
 	}
-	catch (const XMLException& toCatch)
+	catch (const xercesc::XMLException& toCatch)
 	{
 		
 	}
 	
-	XMLPlatformUtils::Terminate();
+	xercesc::XMLPlatformUtils::Terminate();
 
 	return "Hello";
 };
