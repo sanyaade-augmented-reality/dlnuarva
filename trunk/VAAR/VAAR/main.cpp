@@ -5,7 +5,7 @@
 
 int main() {
 	vaar_file::FileReader* file_reader = new vaar_file::XMLReader;
-	std::cout << file_reader->Read("tutor.xml") << std::endl;
+	file_reader->Read("tutor.xml");
 
 	return 0;
 }

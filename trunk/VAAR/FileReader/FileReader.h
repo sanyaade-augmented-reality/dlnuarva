@@ -26,7 +26,7 @@ namespace vaar_file {
 
 class FileReader {
 public:
-	virtual __declspec(dllexport) char* Read(const char* file_path) = 0;
+	virtual __declspec(dllexport) void Read(const char* file_path) = 0;
 };
 
 } // namespace vaar_file

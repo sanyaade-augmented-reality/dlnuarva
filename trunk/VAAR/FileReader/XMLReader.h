@@ -28,7 +28,7 @@ namespace vaar_file {
 
 class XMLReader : public FileReader {
 public:
-	virtual __declspec(dllexport) char* Read(const char* file_path);
+	virtual __declspec(dllexport) void Read(const char* file_path);
 };
 
 } // namespace vaar_file

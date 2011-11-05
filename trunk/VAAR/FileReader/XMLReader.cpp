@@ -26,35 +26,64 @@
 #include <xercesc/util/XMLString.hpp>
 #include <xercesc/parsers/XercesDOMParser.hpp>
 #include <xercesc/dom/DOM.hpp>
+#include <xercesc/dom/DOMElement.hpp>
+#include <xercesc/dom/DOMNode.hpp>
 #include <xercesc/sax/HandlerBase.hpp>
 
 #include <iostream>
 
 
 namespace vaar_file {
-__declspec(dllexport) char* XMLReader::Read(const char* file_path) {
+
+__declspec(dllexport) void XMLReader::Read(const char* file_path) {
 	try {
+		// initialize the xerces.
 		xercesc::XMLPlatformUtils::Initialize();
    
 		xercesc::XercesDOMParser *parser = new xercesc::XercesDOMParser();
-		if (parser) {
-			parser->setValidationScheme(xercesc::XercesDOMParser::Val_Auto);
-			parser->setDoNamespaces(false);
-			parser->setDoSchema(false);
+		if (NULL == parser)
+			return;
 
-			// skip this if you haven't written your own error reporter class.
-			xercesc::ErrorHandler* errHandler = (xercesc::ErrorHandler*) new xercesc::HandlerBase();
-			parser->setErrorHandler(errHandler);
+		// configration.
+		parser->setValidationScheme(xercesc::XercesDOMParser::Val_Auto);
+		parser->setDoNamespaces(false);
+		parser->setDoSchema(false);
 
+		// error handling configuration.
+		xercesc::ErrorHandler* errHandler = (xercesc::ErrorHandler*) new xercesc::HandlerBase();
+		parser->setErrorHandler(errHandler);
+
+		// parse file.
+		parser->parse(file_path);
 		
-			parser->parse(file_path);
-			xercesc::DOMDocument* document = parser->getDocument();
-			
+		// get document.
+		xercesc::DOMDocument* document = parser->getDocument();
+		if (NULL == document) {
 			parser->adoptDocument();
-			delete document;
 			delete errHandler;
 			delete parser;
+			return;
 		}
+
+		// get elemet.
+		xercesc::DOMElement *element = document->getDocumentElement();
+		if (NULL == document) {
+			parser->adoptDocument();
+			delete errHandler;
+			delete parser;
+			return;
+		}
+
+		while (NULL != element) {
+			
+		}
+		
+		//delete element;
+		parser->adoptDocument();
+		delete document;
+		delete errHandler;
+		delete parser;
+		
 		
 		
 	} catch (const xercesc::XMLException& toCatch) {
@@ -62,19 +91,16 @@ __declspec(dllexport) char* XMLReader::Read(const char* file_path) {
 		std::cerr << "Exception message is: \n"
 			<< message << "\n";
 		xercesc::XMLString::release(&message);
-		return "";
+		return;
 	} catch (const xercesc::DOMException& toCatch) {
 		char* message = xercesc::XMLString::transcode(toCatch.msg);
 		std::cerr << "Exception message is: \n"
 			<< message << "\n";
 		xercesc::XMLString::release(&message);
-		return "";
+		return;
 	}
 	
-
 	xercesc::XMLPlatformUtils::Terminate();
-	std::cout << "Hello\n" << std::endl;
-	return "Hello";
 };
 
 } // namespace vaar_file
