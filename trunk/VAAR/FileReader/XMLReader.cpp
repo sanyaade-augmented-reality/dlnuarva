@@ -21,22 +21,59 @@
 ///////////////////////////////////////////////////////////////////////////
 
 #include "XMLReader.h"
+
 #include <xercesc/util/PlatformUtils.hpp>
+#include <xercesc/util/XMLString.hpp>
+#include <xercesc/parsers/XercesDOMParser.hpp>
+#include <xercesc/dom/DOM.hpp>
+#include <xercesc/sax/HandlerBase.hpp>
+
+#include <iostream>
+
 
 namespace vaar_file {
-
 __declspec(dllexport) char* XMLReader::Read(const char* file_path) {
-	try
-	{
+	try {
 		xercesc::XMLPlatformUtils::Initialize();
-	}
-	catch (const xercesc::XMLException& toCatch)
-	{
+   
+		xercesc::XercesDOMParser *parser = new xercesc::XercesDOMParser();
+		if (parser) {
+			parser->setValidationScheme(xercesc::XercesDOMParser::Val_Auto);
+			parser->setDoNamespaces(false);
+			parser->setDoSchema(false);
+
+			// skip this if you haven't written your own error reporter class.
+			xercesc::ErrorHandler* errHandler = (xercesc::ErrorHandler*) new xercesc::HandlerBase();
+			parser->setErrorHandler(errHandler);
+
 		
+			parser->parse(file_path);
+			xercesc::DOMDocument* document = parser->getDocument();
+			
+			parser->adoptDocument();
+			delete document;
+			delete errHandler;
+			delete parser;
+		}
+		
+		
+	} catch (const xercesc::XMLException& toCatch) {
+		char* message = xercesc::XMLString::transcode(toCatch.getMessage());
+		std::cerr << "Exception message is: \n"
+			<< message << "\n";
+		xercesc::XMLString::release(&message);
+		return "";
+	} catch (const xercesc::DOMException& toCatch) {
+		char* message = xercesc::XMLString::transcode(toCatch.msg);
+		std::cerr << "Exception message is: \n"
+			<< message << "\n";
+		xercesc::XMLString::release(&message);
+		return "";
 	}
 	
-	xercesc::XMLPlatformUtils::Terminate();
 
+	xercesc::XMLPlatformUtils::Terminate();
+	std::cout << "Hello\n" << std::endl;
 	return "Hello";
 };
 

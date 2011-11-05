@@ -1,10 +1,11 @@
-#include <cstdio>
 #include "XMLReader.h"
 #include "FileReader.h"
-using namespace std;
+
+#include <iostream>
 
 int main() {
 	vaar_file::FileReader* file_reader = new vaar_file::XMLReader;
-	printf("%s\n", file_reader->Read("tutor.xml"));
+	std::cout << file_reader->Read("tutor.xml") << std::endl;
+
 	return 0;
 }
