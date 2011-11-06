@@ -44,28 +44,6 @@ namespace SWAssemblyDocExtractionApplication {
         }
 
         /// <summary>
-        /// 获取组件的特征
-        /// </summary>
-        private static List<Feature> GetFeaturesOfComponent(Component2 component) {
-            if (component == null) {
-                return null;
-            }
-
-            List<Feature> features = new List<Feature>();
-            Feature feature = null;
-            ModelDoc2 doc = component.GetModelDoc2();
-
-            feature = doc.FirstFeature();
-
-            while (feature != null) {
-                features.Add(feature);
-                feature = feature.GetNextFeature();
-            }
-
-            return features;
-        }
-
-        /// <summary>
         /// 递归创建装配树
         /// </summary>
         /// <param name="component"></param>
@@ -106,8 +84,6 @@ namespace SWAssemblyDocExtractionApplication {
                     swComponent.Bodies.Add(CreateSWBody((Body2)objBody));
                 }
             }
-
-
 
             //继续遍历
             object[] subComponents = component.GetChildren();

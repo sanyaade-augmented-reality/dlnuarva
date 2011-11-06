@@ -16,8 +16,8 @@
 //
 // Author: Yang Yu, alex890714@gmail.com
 //   File: /FileReader/XMLReader.cpp
-//         This file implement a class for reading the assembly file of the xml 
-//         format.
+//         This file implemented a class for reading the assembly 
+//         file of the XML format.
 ///////////////////////////////////////////////////////////////////////////
 
 #include <iostream>
@@ -34,6 +34,21 @@
 #include "StrX.h"
 
 namespace vaar_file {
+
+void Traverse(xercesc::DOMElement *element) {
+	if (NULL == element)
+		return;
+
+	std::cout << StrX(element->getTagName()) << "\n";
+
+	Traverse(element->getFirstElementChild());
+
+	element = element->getNextElementSibling();
+	while (NULL != element) {
+		Traverse(element);
+		element = element->getNextElementSibling();
+	}
+}
 
 __declspec(dllexport) void XMLReader::Read(const char* file_path) {
 	try {
@@ -79,18 +94,16 @@ __declspec(dllexport) void XMLReader::Read(const char* file_path) {
 		element = element->getFirstElementChild();
 		std::cout << StrX(element->getTagName()) << "\n";
 		std::cout << StrX(element->getTextContent()) << "\n";
-		*/
+		
 
 		std::cout << StrX(element->getTagName()) << "\n";
 		element = element->getFirstElementChild();
 		std::cout << StrX(element->getTagName()) << "\n";
 		element = element->getNextElementSibling();
 		std::cout << StrX(element->getTagName()) << "\n";
-		/*
-		while (NULL != element) {
-			
-		}
 		*/
+
+		Traverse(element);
 		
 		parser->adoptDocument();
 		delete document;

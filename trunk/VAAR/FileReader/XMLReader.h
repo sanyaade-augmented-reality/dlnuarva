@@ -16,7 +16,8 @@
 //
 // Author: Yang Yu, alex890714@gmail.com
 //   File: /FileReader/XMLReader.h
-//         This file define a class for reading the assembly file of the xml format.
+//         This file define a class for reading the assembly file of the 
+//         XML format.
 ///////////////////////////////////////////////////////////////////////////
 
 #ifndef FILEREADER_XMLREADER_H_
