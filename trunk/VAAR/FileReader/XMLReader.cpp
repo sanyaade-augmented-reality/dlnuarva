@@ -20,7 +20,7 @@
 //         format.
 ///////////////////////////////////////////////////////////////////////////
 
-#include "XMLReader.h"
+#include <iostream>
 
 #include <xercesc/util/PlatformUtils.hpp>
 #include <xercesc/util/XMLString.hpp>
@@ -30,8 +30,8 @@
 #include <xercesc/dom/DOMNode.hpp>
 #include <xercesc/sax/HandlerBase.hpp>
 
-#include <iostream>
-
+#include "XMLReader.h"
+#include "StrX.h"
 
 namespace vaar_file {
 
@@ -44,7 +44,7 @@ __declspec(dllexport) void XMLReader::Read(const char* file_path) {
 		if (NULL == parser)
 			return;
 
-		// configration.
+		// configuration.
 		parser->setValidationScheme(xercesc::XercesDOMParser::Val_Auto);
 		parser->setDoNamespaces(false);
 		parser->setDoSchema(false);
@@ -65,8 +65,8 @@ __declspec(dllexport) void XMLReader::Read(const char* file_path) {
 			return;
 		}
 
-		// get elemet.
-		xercesc::DOMElement *element = document->getDocumentElement();
+		// get element.
+		xercesc::DOMElement* element = document->getDocumentElement();
 		if (NULL == document) {
 			parser->adoptDocument();
 			delete errHandler;
@@ -74,29 +74,31 @@ __declspec(dllexport) void XMLReader::Read(const char* file_path) {
 			return;
 		}
 
+		/*
+		std::cout << StrX(element->getTagName()) << "\n";
+		element = element->getFirstElementChild();
+		std::cout << StrX(element->getTagName()) << "\n";
+		std::cout << StrX(element->getTextContent()) << "\n";
+		*/
+
+		//element->nex
+		/*
 		while (NULL != element) {
 			
 		}
+		*/
 		
-		//delete element;
 		parser->adoptDocument();
 		delete document;
 		delete errHandler;
 		delete parser;
-		
-		
-		
-	} catch (const xercesc::XMLException& toCatch) {
-		char* message = xercesc::XMLString::transcode(toCatch.getMessage());
+	} catch (const xercesc::XMLException& toCatch) {	
 		std::cerr << "Exception message is: \n"
-			<< message << "\n";
-		xercesc::XMLString::release(&message);
+			<< StrX(toCatch.getMessage()) << "\n";
 		return;
 	} catch (const xercesc::DOMException& toCatch) {
-		char* message = xercesc::XMLString::transcode(toCatch.msg);
 		std::cerr << "Exception message is: \n"
-			<< message << "\n";
-		xercesc::XMLString::release(&message);
+			<< StrX(toCatch.getMessage()) << "\n";
 		return;
 	}
 	

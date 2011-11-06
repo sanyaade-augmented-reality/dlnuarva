@@ -21,6 +21,9 @@
     <ClInclude Include="XMLReader.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="StrX.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="XMLReader.cpp">

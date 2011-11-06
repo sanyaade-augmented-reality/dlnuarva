@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 // Author: Yang Yu, alex890714@gmail.com
-//   File: /XMLReader/XMLReader.h
+//   File: /FileReader/XMLReader.h
 //         This file define a class for reading the assembly file of the xml format.
 ///////////////////////////////////////////////////////////////////////////
 
