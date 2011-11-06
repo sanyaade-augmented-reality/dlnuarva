@@ -81,7 +81,11 @@ __declspec(dllexport) void XMLReader::Read(const char* file_path) {
 		std::cout << StrX(element->getTextContent()) << "\n";
 		*/
 
-		//element->nex
+		std::cout << StrX(element->getTagName()) << "\n";
+		element = element->getFirstElementChild();
+		std::cout << StrX(element->getTagName()) << "\n";
+		element = element->getNextElementSibling();
+		std::cout << StrX(element->getTagName()) << "\n";
 		/*
 		while (NULL != element) {
 			
