@@ -8,29 +8,8 @@ namespace SWAssemblyDocExtractionApplication.SWDataModel {
     /// 顶点
     /// </summary>
     public class SWVertex {
-        #region 成员变量
-
-        /// <summary>
-        /// 空间中的位置
-        /// </summary>
-        private SWPoint _point = null;
-
-        #endregion
-
-        #region 属性
-
-        /// <summary>
-        /// 空间中的位置
-        /// </summary>
-        public SWPoint Point {
-            get {
-                return _point;
-            }
-            set {
-                _point = value;
-            }
-        }
-
-        #endregion
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double Z { get; set; }
     }
 }

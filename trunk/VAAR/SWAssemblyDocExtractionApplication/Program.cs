@@ -18,6 +18,9 @@ namespace SWAssemblyDocExtractionApplication {
         static void Main(string[] args) {
             swApp = new SldWorks();
             ExtractTree();
+
+            System.Console.WriteLine("Extraction finished!");
+            System.Console.ReadKey();
         }
 
         /// <summary>
@@ -39,8 +42,6 @@ namespace SWAssemblyDocExtractionApplication {
             StreamWriter file = new StreamWriter(@"" + swComponent.Name + ".xml");
             xmlSerializer.Serialize(file, swComponent);
             file.Close();
-
-            //Debug.Print("");
         }
 
         /// <summary>
@@ -348,11 +349,16 @@ namespace SWAssemblyDocExtractionApplication {
             double[] point = vertex.GetPoint();
 
             if (point != null) {
+                /*
                 swVertex.Point = new SWPoint() {
                     X = point[0],
                     Y = point[1],
                     Z = point[2]
                 };
+                 * */
+                swVertex.X = point[0];
+                swVertex.Y = point[1];
+                swVertex.Z = point[2];
             }
 
             return swVertex;
@@ -458,16 +464,19 @@ namespace SWAssemblyDocExtractionApplication {
             swFace.BoundingBox = CreateSWBoundingBox(face.GetBox());
 
             //三角面片
-            int tessTriCount = face.GetTessTriangleCount();
-            float[] arrTriangles = face.GetTessTriangles(false);
+            //int tessTriCount = face.GetTessTriangleCount();
+            swFace.TessTriangles = face.GetTessTriangles(false);
+            swFace.TessNormals = face.GetTessNorms();
 
             //OutPutTessTriangles(tessTriCount, arrTriangles);
+            /* 
             if (arrTriangles != null) {
                 for (int i = 0; i < tessTriCount; i += 9) {
                     swFace.TessTriangles.Add(CreateSWTriangle(arrTriangles, i));
                 }
             }
-
+            */
+           
             //几何信息
             swFace.Surface = CreateSWSurface(face.GetSurface());
 
@@ -575,12 +584,12 @@ namespace SWAssemblyDocExtractionApplication {
 
             //乘以1000转换到mm进制
             SWBoundingBox swBoundingBox = new SWBoundingBox() {
-                LowerCorner = new SWPoint() {
+                LowerCorner = new SWVertex() {
                     X = box[0],
                     Y = box[1],
                     Z = box[2]
                 },
-                UpperCorner = new SWPoint() {
+                UpperCorner = new SWVertex() {
                     X = box[3],
                     Y = box[4],
                     Z = box[5]

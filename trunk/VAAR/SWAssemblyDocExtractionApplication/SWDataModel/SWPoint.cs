@@ -8,15 +8,15 @@ namespace SWAssemblyDocExtractionApplication.SWDataModel {
     /// 三维空间中的点，单位mm
     /// </summary>
     public class SWPoint {
-        public double X {
+        public float X {
             get;
             set;
         }
-        public double Y {
+        public float Y {
             get;
             set;
         }
-        public double Z {
+        public float Z {
             get;
             set;
         }

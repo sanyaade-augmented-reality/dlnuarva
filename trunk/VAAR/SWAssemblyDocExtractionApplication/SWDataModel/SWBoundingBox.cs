@@ -11,7 +11,7 @@ namespace SWAssemblyDocExtractionApplication.SWDataModel {
         /// <summary>
         /// 下对角点
         /// </summary>
-        public SWPoint LowerCorner {
+        public SWVertex LowerCorner {
             get;
             set;
         }
@@ -19,7 +19,7 @@ namespace SWAssemblyDocExtractionApplication.SWDataModel {
         /// <summary>
         /// 上对角点
         /// </summary>
-        public SWPoint UpperCorner {
+        public SWVertex UpperCorner {
             get;
             set;
         }

@@ -23,7 +23,13 @@ namespace SWAssemblyDocExtractionApplication.SWDataModel {
         /// <summary>
         /// 三角面片
         /// </summary>
-        private List<SWTriangle> _tessTriangles = new List<SWTriangle>();
+        //private List<SWTriangle> _tessTriangles = new List<SWTriangle>();
+        private float[] _tessTriangles = null;
+
+        /// <summary>
+        /// 三角面片法向量
+        /// </summary>
+        private float[] _tessNormals = null;
 
         /// <summary>
         /// 几何信息
@@ -61,12 +67,34 @@ namespace SWAssemblyDocExtractionApplication.SWDataModel {
         /// <summary>
         /// 三角面片
         /// </summary>
+        public float[] TessTriangles {
+            get {
+                return _tessTriangles;
+            }
+            set {
+                _tessTriangles = value;
+            }
+        }
+        /*
         public List<SWTriangle> TessTriangles {
             get {
                 return _tessTriangles;
             }
             set {
                 _tessTriangles = value;
+            }
+        }
+         * */
+
+        /// <summary>
+        /// 三角面片法向量
+        /// </summary>
+        public float[] TessNormals {
+            get {
+                return _tessNormals;
+            }
+            set {
+                _tessNormals = value;
             }
         }
 
