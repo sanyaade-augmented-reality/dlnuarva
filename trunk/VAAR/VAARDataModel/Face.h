@@ -25,6 +25,7 @@
 
 #include <memory>
 #include <vector>
+#include <string>
 
 //声明并引入Surface类
 class vaar_data::Surface;
@@ -37,50 +38,53 @@ public:
 	// 构造函数和析构函数
     Face(const char* id, 
 		 const Surface* surface, 
-		 const std::vector<int>* triangles) {
+		 const std::vector<int>* triangles
+		 const std::vector<int>* normals) {
 		SetID(id);
 		SetSurface(surface);
 		SetTriangles(triangles);
+		SetNormals(normals);
 	}
 	~Face();
 
 	// getter and setter
 	void SetID(const char* id) {
-		id_ = id;
+		id_ = std::tr1::shared_ptr<std::string>(new std::string(id));
 	}
-	char* GetID() {
-		return id_.get();
+	const char* GetID() {
+		return id_.get()->c_str();
 	}
 
 	void SetSurface(const Surface* surface) {
-		surface_ = surface;
+		surface_ = std::tr1::shared_ptr<Surface>(surface);
 	}
-	Surface* GetSurface() {
+	const Surface* GetSurface() {
 		return surface_.get();
 	}
 
 	void SetTriangles(const std::vector<int>* triangles) {
-		triangles_ = triangles;
+		triangles_ = std::tr1::shared_ptr<std::vector<int>>(triangles);
 	}
-	std::vector<int>* GetTriangles() {
+	const std::vector<int>* GetTriangles() {
 		return triangles_.get();
 	}
 
 	void SetNormals(const std::vector<int>* normals) {
-		normals_ = normals;
+		normals_ = std::tr1::shared_ptr<std::vector<int>>(normals);
 	}
 	std::vector<int>* GetNormals() {
-		return normals_;
+		return normals_.get();
 	}
 private:
 	// ID
-	std::tr1::shared_ptr<char*> id_;
+	std::tr1::shared_ptr<std::string> id_;
 	// 几何信息类
-	std::tr1::shared_ptr<Surface*> surface_;
+	std::tr1::shared_ptr<Surface> surface_;
 	// 三角面片的索引
-	std::tr1::shared_ptr<std::vector<int>*> triangles_;
+	std::tr1::shared_ptr<std::vector<int>> triangles_;
 	// 三角面片每一个点的向量索引
-	std::tr1::shared_ptr<std::vector<int>*> normals_;
+	std::tr1::shared_ptr<std::vector<int>> normals_;
+	// 包围盒
 };
 
 } // namespace vaar_data

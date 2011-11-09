@@ -24,6 +24,7 @@
 #define VAARDATAMODEL_VERTEX_H_
 
 #include <memory>
+#include <string>
 
 namespace vaar_data {
 
@@ -42,33 +43,33 @@ public:
 	void SetX(const double x) {
 		x_ = x;
 	}
-	double GetX() {
+	const double GetX() {
 		return x_;
 	}
 
 	void SetY(const double y) {
 		y_ = y;
 	}
-	double GetY() {
+	const double GetY() {
 		return y_;
 	}
 
 	void SetZ(const double z) {
 		z_ = z;
 	}
-	double GetZ() {
+	const double GetZ() {
 		return z_;
 	}
 
 	void SetID(const char* id) {
-		id_ = id;
+		id_ = std::tr1::shared_ptr<std::string>(new std::string(id));
 	}
-	char* GetID() {
-		return id_.get();
+	const char* GetID() {
+		return id_.get()->c_str();
 	}
 private:
 	// ID
-	std::tr1::shared_ptr<char*> id_;
+	std::tr1::shared_ptr<std::string> id_;
 	// зјБъ
 	double x_;
 	double y_;

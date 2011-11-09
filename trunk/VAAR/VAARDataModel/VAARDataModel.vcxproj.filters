@@ -33,5 +33,14 @@
     <ClInclude Include="Component.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="MateEntity.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Mate.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DataModel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

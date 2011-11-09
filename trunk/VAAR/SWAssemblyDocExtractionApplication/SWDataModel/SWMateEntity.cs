@@ -20,6 +20,11 @@ namespace SWAssemblyDocExtractionApplication.SWDataModel {
         /// </summary>
         private double[] _params = new double[8];
 
+        /// <summary>
+        /// 组件名称
+        /// </summary>
+        private string _componentName = string.Empty;
+
         #endregion
 
         #region 属性
@@ -45,6 +50,18 @@ namespace SWAssemblyDocExtractionApplication.SWDataModel {
             }
             set {
                 _params = value;
+            }
+        }
+
+        /// <summary>
+        /// 组件名称
+        /// </summary>
+        public string ComponentName {
+            get {
+                return _componentName;
+            }
+            set {
+                _componentName = value;
             }
         }
 

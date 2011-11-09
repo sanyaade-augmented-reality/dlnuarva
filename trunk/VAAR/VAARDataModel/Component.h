@@ -25,6 +25,7 @@
 
 #include <memory>
 #include <vector>
+#include <string>
 
 //声明并引入
 class vaar_data::Face;
@@ -52,51 +53,63 @@ public:
 
 	// getter and setter
 	void SetID(const char* id) {
-		id_ = id;
+		id_ = std::tr1::shared_ptr<std::string>(new std::string(id));
 	}
-	char* GetID() {
-		return id_._Get();
+	const char* GetID() {
+		return id_.get()->c_str();
 	}
 
 	void SetName(const char* name) {
-		name_ = name;
+		name_ = std::tr1::shared_ptr<std::string>(new std::string(name));
 	}
-	char* GetName() {
-		return name_._Get();
+	const char* GetName() {
+		return name_._Get()->c_str();
 	}
 
 	void SetFaces(const std::vector<Face*>* faces) {
-		faces_ = faces;
+		faces_ = std::tr1::shared_ptr<std::vector<Face*>>(faces);
 	}
-	std::vector<Face*>* GetFaces() {
+	const std::vector<Face*>* GetFaces() {
 		return faces_.get();
 	}
 
 	void SetEdges(const std::vector<Edge*>* edges) {
-		edges_ = edges;
+		edges_ = std::tr1::shared_ptr<std::vector<Edge*>>(edges);
 	}
-	std::vector<Edge*>* GetEdges() {
+	const std::vector<Edge*>* GetEdges() {
 		return edges_.get();
 	}
 
 	void SetVertices(const std::vector<Vertex*>* vertices) {
-		vertices_ = vertices;
+		vertices_ = std::tr1::shared_ptr<std::vector<Vertex*>>(vertices);
 	}
-	std::vector<Vertex*>* GetVertices() {
+	const std::vector<Vertex*>* GetVertices() {
 		return vertices_.get();
 	}
+
+	void SetSubComponents(const std::vector<Component*>* sub_components) {
+		sub_components_ = std::tr1::shared_ptr<std::vector<Component*>>(sub_components);
+	}
+	const std::vector<Component*>* GetSubComponents() {
+		return sub_components_.get();
+	}
+
 private:
 	// ID
-	std::tr1::shared_ptr<char*> id_;
+	std::tr1::shared_ptr<std::string> id_;
 	// 名称
-	std::tr1::shared_ptr<char*> name_;
+	std::tr1::shared_ptr<std::string> name_;
 	// 面表
-	std::tr1::shared_ptr<std::vector<Face*>*> faces_;
+	std::tr1::shared_ptr<std::vector<Face*>> faces_;
 	// 边表
-	std::tr1::shared_ptr<std::vector<Edge*>*> edges_;
+	std::tr1::shared_ptr<std::vector<Edge*>> edges_;
 	// 点表
-	std::tr1::shared_ptr<std::vector<Vertex*>*> vertices_;
+	std::tr1::shared_ptr<std::vector<Vertex*>> vertices_;
+	// 子装配体
+	std::tr1::shared_ptr<std::vector<Component*>> sub_components_;
 
+	// 包围盒
+	// 局部坐标系到世界坐标系的转换矩阵
 	// 物理属性
 	// 工程属性
 	// 环境属性

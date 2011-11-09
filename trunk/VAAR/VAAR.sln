@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SWAssemblyDocExtractionAppl
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FileReader", "FileReader\FileReader.vcxproj", "{319558EA-1384-44ED-8BB6-C22D9E2C83D8}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VAARDataModel", "VAARDataModel\VAARDataModel.vcxproj", "{06941EFD-5F9D-4CCA-80ED-E0F6A816A28B}"
-EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -53,16 +51,6 @@ Global
 		{319558EA-1384-44ED-8BB6-C22D9E2C83D8}.Release|Win32.ActiveCfg = Release|Win32
 		{319558EA-1384-44ED-8BB6-C22D9E2C83D8}.Release|Win32.Build.0 = Release|Win32
 		{319558EA-1384-44ED-8BB6-C22D9E2C83D8}.Release|x86.ActiveCfg = Release|Win32
-		{06941EFD-5F9D-4CCA-80ED-E0F6A816A28B}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{06941EFD-5F9D-4CCA-80ED-E0F6A816A28B}.Debug|Mixed Platforms.Build.0 = Debug|Win32
-		{06941EFD-5F9D-4CCA-80ED-E0F6A816A28B}.Debug|Win32.ActiveCfg = Debug|Win32
-		{06941EFD-5F9D-4CCA-80ED-E0F6A816A28B}.Debug|Win32.Build.0 = Debug|Win32
-		{06941EFD-5F9D-4CCA-80ED-E0F6A816A28B}.Debug|x86.ActiveCfg = Debug|Win32
-		{06941EFD-5F9D-4CCA-80ED-E0F6A816A28B}.Release|Mixed Platforms.ActiveCfg = Release|Win32
-		{06941EFD-5F9D-4CCA-80ED-E0F6A816A28B}.Release|Mixed Platforms.Build.0 = Release|Win32
-		{06941EFD-5F9D-4CCA-80ED-E0F6A816A28B}.Release|Win32.ActiveCfg = Release|Win32
-		{06941EFD-5F9D-4CCA-80ED-E0F6A816A28B}.Release|Win32.Build.0 = Release|Win32
-		{06941EFD-5F9D-4CCA-80ED-E0F6A816A28B}.Release|x86.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

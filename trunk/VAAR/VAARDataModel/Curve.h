@@ -26,13 +26,14 @@
 #define CURVE_PARAMS_LENGTH 11
 
 #include <memory>
+#include <string>
 
 namespace vaar_data {
 
 class Curve  {
 public:
 	// 构造函数和析构函数
-	Curve(const char* id, const CurveType type, const double[CURVE_PARAMS_LENGTH] params) {
+	Curve(const char* id, const CurveType type, const double params[CURVE_PARAMS_LENGTH]) {
 		SetID(id);
 		SetCurveType(type);
 		SetParams(params);
@@ -41,12 +42,12 @@ public:
 
 	// getter and setter
 	// 设置params属性
-	void SetParams(const double[CURVE_PARAMS_LENGTH] params) {
+	void SetParams(const double params[CURVE_PARAMS_LENGTH]) {
 		for (int i = 0; i < CURVE_PARAMS_LENGTH; ++i)
 			params_[i] = params[i];
 	}
 	// 返回一个长度为11的params数组，size存长度。
-	double* GetParams(int &size) {
+	const double* GetParams(int &size) {
 		size = CURVE_PARAMS_LENGTH;
 		return params_;
 	}
@@ -54,19 +55,19 @@ public:
 	void SetCurveType(const CurveType type) {
 		type_ = type;
 	}
-	SurfaceType GetCurveType() {
+	const SurfaceType GetCurveType() {
 		return type_;
 	}
 
 	void SetID(const char* id) {
-		id_ = id;
+		id_ = std::tr1::shared_ptr<std::string>(new std::string(id));
 	}
-	char* GetID() {
-		return id_.get();
+	const char* GetID() {
+		return id_.get()->c_str();
 	}
 private:
 	//ID
-	std::tr1::shared_ptr<char*> id_;
+	std::tr1::shared_ptr<std::string> id_;
 	//类型
 	CurveType type_;
 	//参数

@@ -233,6 +233,8 @@ namespace SWAssemblyDocExtractionApplication {
                 return null;
 
             SWMateEntity swMateEntity = new SWMateEntity();
+            
+            swMateEntity.ComponentName = entity.ReferenceComponent.Name2;
 
             #region switch mate entity type
 

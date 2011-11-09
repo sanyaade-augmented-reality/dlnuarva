@@ -26,6 +26,7 @@
 #define SURFACE_PARAMS_LENGTH 8
 
 #include <memory>
+#include <string>
 
 namespace vaar_data {
 
@@ -33,7 +34,7 @@ namespace vaar_data {
 class Surface {
 public:
 	// 构造函数和析构函数
-	Surface(const char* id, const SurfaceType type, const double[SURFACE_PARAMS_LENGTH] params) {
+	Surface(const char* id, const SurfaceType type, const double params[SURFACE_PARAMS_LENGTH]) {
 		SetID(id);
 		SetSurfaceType(type);
 		SetParams(params);
@@ -42,12 +43,12 @@ public:
 
 	// getter and setter
 	// 设置params属性
-	void SetParams(const double[SURFACE_PARAMS_LENGTH] params) {
+	void SetParams(const double params[SURFACE_PARAMS_LENGTH] ) {
 		for (int i = 0; i < SURFACE_PARAMS_LENGTH; ++i)
 			params_[i] = params[i];
 	}
 	// 返回一个长度为8的params数组，size存长度。
-	double* GetParams(int &size) {
+	const double* GetParams(int &size) {
 		size = SURFACE_PARAMS_LENGTH;
 		return params_;
 	}
@@ -55,19 +56,19 @@ public:
 	void SetSurfaceType(const SurfaceType type) {
 		type_ = type;
 	}
-	SurfaceType GetSurfaceType() {
+	const SurfaceType GetSurfaceType() {
 		return type_;
 	}
 
 	void SetID(const char* id) {
-		id_ = id;
+		id_ = std::tr1::shared_ptr<std::string>(new std::string(id));
 	}
-	char* GetID() {
-		return id_.get();
+	const char* GetID() {
+		return id_.get()->c_str();
 	}
 private:
 	//ID
-	std::tr1::shared_ptr<char*> id_;
+	std::tr1::shared_ptr<std::string> id_;
 	//类型
 	SurfaceType type_;
 	//参数
