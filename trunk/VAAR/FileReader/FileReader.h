@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-// Copyright (C) 2011  Dalian Nationalities University
+// 版权声明 (C) 2011  大连民族学院
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,9 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-// Author: Yang Yu, alex890714@gmail.com
-//   File: /FileReader/FileReader.h
-//         This file define a interface for reading the assembly file.
+// 作者: 杨雨, alex890714@gmail.com
+// 文件: /FileReader/FileReader.h
+//       这个文件声明了读取装配文件的接口。
+// 修改历史：
 ///////////////////////////////////////////////////////////////////////////
 
 #ifndef FILEREADER_FILEREADER_H_

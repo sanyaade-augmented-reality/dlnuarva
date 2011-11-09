@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-// Copyright (C) 2011  Dalian Nationalities University
+// 版权声明 (C) 2011  大连民族学院
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,10 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-// Author: Yang Yu, alex890714@gmail.com
-//   File: /FileReader/XMLReader.cpp
-//         This file implemented a class for reading the assembly 
-//         file of the XML format.
+// 作者: 杨雨, alex890714@gmail.com
+// 文件: /FileReader/XMLReader.cpp
+//       这个文件实现了XMLReader类。
+// 修改历史：
 ///////////////////////////////////////////////////////////////////////////
 
 #include <iostream>
