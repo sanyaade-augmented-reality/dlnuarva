@@ -52,21 +52,21 @@ public:
 	void SetID(const char* id) {
 		id_ = std::tr1::shared_ptr<std::string>(new std::string(id));
 	}
-	const char* GetID() {
-		return id_.get()->c_str();
+	char* GetID() {
+		return (char*)id_.get()->c_str();
 	}
 
 	void SetSurface(Surface* surface) {
 		surface_ = std::tr1::shared_ptr<Surface>(surface);
 	}
-	const Surface* GetSurface() {
+	Surface* GetSurface() {
 		return surface_.get();
 	}
 
 	void SetTriangles(std::vector<int>* triangles) {
 		triangles_ = std::tr1::shared_ptr<std::vector<int>>(triangles);
 	}
-	const std::vector<int>* GetTriangles() {
+	std::vector<int>* GetTriangles() {
 		return triangles_.get();
 	}
 

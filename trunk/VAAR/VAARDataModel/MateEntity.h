@@ -61,8 +61,8 @@ public:
 	void SetComponentName(const char* name) {
 		component_name_ = std::tr1::shared_ptr<std::string>(new std::string(name));
 	}
-	const char* GetComponentName() {
-		return component_name_.get()->c_str();
+	char* GetComponentName() {
+		return (char*)component_name_.get()->c_str();
 	}
 
 	// 设置参数
@@ -71,7 +71,7 @@ public:
 			params_[i] = params[i];
 	}
 	// 返回一个长度为8的参数数组，size存长度。
-	const double* GetParams(int &size) {
+	double* GetParams(int &size) {
 		size = MATEENTITY_PARAMS_LENGTH;
 		return params_;
 	}
@@ -79,14 +79,14 @@ public:
 	void SetMateEntityType(const MateEntityType type) {
 		type_ = type;
 	}
-	const MateEntityType GetMateEntityType() {
+	MateEntityType GetMateEntityType() {
 		return type_;
 	}
 
 	void SetComponent(Component* component) {
 		component_  = std::tr1::shared_ptr<Component>(component);
 	}
-	const Component* GetComponent() {
+	Component* GetComponent() {
 		return component_.get();
 	}
 

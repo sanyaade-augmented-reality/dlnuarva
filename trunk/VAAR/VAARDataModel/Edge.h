@@ -52,7 +52,7 @@ public:
 			params_[i] = params[i];
 	}
 	// 返回一个长度为11的params数组，size存长度。
-	const double* GetParams(int &size) {
+	double* GetParams(int &size) {
 		size = EDGE_PARAMS_LENGTH;
 		return params_;
 	}
@@ -60,15 +60,15 @@ public:
 	void SetCurve(Curve* curve) {
 		curve_ = std::tr1::shared_ptr<Curve>(curve);
 	}
-	const Curve* GetCurve() {
+	Curve* GetCurve() {
 		return curve_.get();
 	}
 
 	void SetID(const char* id) {
 		id_ = std::tr1::shared_ptr<std::string>(new std::string(id));
 	}
-	const char* GetID() {
-		return id_.get()->c_str();
+	char* GetID() {
+		return (char*)id_.get()->c_str();
 	}
 
 private:

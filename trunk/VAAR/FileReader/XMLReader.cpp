@@ -34,6 +34,8 @@
 #include "StrX.h"
 #include "DataModelInputDecorator/InputDecorator.h"
 #include "DataModelInputDecorator/VertexInputDecorator.h"
+#include "DataModelInputDecorator/CurveInputDecorator.h"
+#include "DataModelInputDecorator/EdgeInputDecorator.h"
 
 namespace vaar_file {
 // 
@@ -97,12 +99,24 @@ __declspec(dllexport) void XMLReader::Read(const char* file_path) {
 		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
 		list = element->getElementsByTagName(xercesc::XMLString::transcode("Bodies"));
 		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
+
+		/* Test VertexInputDecorator
 		list = element->getElementsByTagName(xercesc::XMLString::transcode("SWVertex"));
 		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
-		
+		*/
+
+		/* Test CurveInputDecorator
+		list = element->getElementsByTagName(xercesc::XMLString::transcode("Curve"));
+		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
+		*/
+
+		list = element->getElementsByTagName(xercesc::XMLString::transcode("SWEdge"));
+		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
+
 		std::cout << StrX(element->getTagName()) << "\n";
 		std::cout << StrX(element->getTextContent()) << "\n";
 
+		/* Test VertexInputDecorator
 		VertexInputDecorator* input = new VertexInputDecorator();
 		input->Parse("", element);
 		vaar_data::Vertex* vertex = input->GetVertex();
@@ -110,6 +124,47 @@ __declspec(dllexport) void XMLReader::Read(const char* file_path) {
 		std::cout << vertex->GetX() << "\n";
 		std::cout << vertex->GetY() << "\n";
 		std::cout << vertex->GetZ() << "\n";
+		*/
+
+		/* Test CurveInputDecorator
+		CurveInputDecorator* input = new CurveInputDecorator();
+		input->Parse("", element);
+		vaar_data::Curve* curve = input->GetCurve();
+
+		int length;
+		const double* params;
+		std::cout << curve->GetCurveType() << "\n";
+		params = curve->GetParams(length);
+
+		for (int i = 0; i < length; ++i) {
+			std::cout << params[i] << "\n";
+		}
+		*/
+
+		EdgeInputDecorator input;
+		input.Parse("edge01", element);
+		vaar_data::Edge* edge = input.GetEdge();
+		vaar_data::Curve* curve = edge->GetCurve();
+		
+		std::cout << edge->GetID() << "\n";
+		std::cout << curve->GetID() << "\n";
+
+		int length;
+		double* params;
+		std::cout << curve->GetCurveType() << "\n";
+		params = curve->GetParams(length);
+
+		for (int i = 0; i < length; ++i) {
+			std::cout << params[i] << "\n";
+		}
+
+		std::cout << "\n";
+
+		params = edge->GetParams(length);
+
+		for (int i = 0; i < length; ++i) {
+			std::cout << params[i] << "\n";
+		}
 
 // 		for (XMLSize_t i = 0; i < list->getLength(); ++i) {
 // 			xercesc::DOMNode* node = list->item(i);

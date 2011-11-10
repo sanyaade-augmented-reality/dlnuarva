@@ -63,7 +63,7 @@ public:
 			params_[i] = params[i];
 	}
 	// 返回一个长度为8的params数组，size存长度。
-	const double* GetParams(int &size) {
+	double* GetParams(int &size) {
 		size = SURFACE_PARAMS_LENGTH;
 		return params_;
 	}
@@ -71,15 +71,15 @@ public:
 	void SetSurfaceType(const SurfaceType type) {
 		type_ = type;
 	}
-	const SurfaceType GetSurfaceType() {
+	SurfaceType GetSurfaceType() {
 		return type_;
 	}
 
 	void SetID(const char* id) {
 		id_ = std::tr1::shared_ptr<std::string>(new std::string(id));
 	}
-	const char* GetID() {
-		return id_.get()->c_str();
+	char* GetID() {
+		return (char*)id_.get()->c_str();
 	}
 private:
 	//ID

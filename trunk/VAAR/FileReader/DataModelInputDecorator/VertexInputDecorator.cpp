@@ -40,7 +40,6 @@ void VertexInputDecorator::Parse(const char *id, xercesc::DOMElement* element) {
 		return;
 
 	double x = 0.0, y = 0.0, z = 0.0;
-	
 	xercesc::DOMElement* current_element = NULL;
 
 	current_element = element->getFirstElementChild();
@@ -56,10 +55,11 @@ void VertexInputDecorator::Parse(const char *id, xercesc::DOMElement* element) {
 				sscanf_s(xercesc::XMLString::transcode(current_element->getTextContent()), "%lf", &z);
 		}
 	} while (
-			 current_element != element->getLastElementChild(),
-			 current_element = current_element->getNextElementSibling()
+		current_element != element->getLastElementChild(),
+		current_element = current_element->getNextElementSibling()
 	);
 
+	// Ìî³ä¶ÔÏó
 	vertex_ = std::shared_ptr<vaar_data::Vertex>(new vaar_data::Vertex(id, x, y, z));
 }
 

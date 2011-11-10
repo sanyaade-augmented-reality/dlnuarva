@@ -56,42 +56,42 @@ public:
 	void SetID(const char* id) {
 		id_ = std::tr1::shared_ptr<std::string>(new std::string(id));
 	}
-	const char* GetID() {
-		return id_.get()->c_str();
+	char* GetID() {
+		return (char*)id_.get()->c_str();
 	}
 
 	void SetName(const char* name) {
 		name_ = std::tr1::shared_ptr<std::string>(new std::string(name));
 	}
-	const char* GetName() {
-		return name_._Get()->c_str();
+	char* GetName() {
+		return (char*)name_._Get()->c_str();
 	}
 
 	void SetFaces(std::vector<Face*>* faces) {
 		faces_ = std::tr1::shared_ptr<std::vector<Face*>>(faces);
 	}
-	const std::vector<Face*>* GetFaces() {
+	std::vector<Face*>* GetFaces() {
 		return faces_.get();
 	}
 
 	void SetEdges(std::vector<Edge*>* edges) {
 		edges_ = std::tr1::shared_ptr<std::vector<Edge*>>(edges);
 	}
-	const std::vector<Edge*>* GetEdges() {
+	std::vector<Edge*>* GetEdges() {
 		return edges_.get();
 	}
 
 	void SetVertices(std::vector<Vertex*>* vertices) {
 		vertices_ = std::tr1::shared_ptr<std::vector<Vertex*>>(vertices);
 	}
-	const std::vector<Vertex*>* GetVertices() {
+	std::vector<Vertex*>* GetVertices() {
 		return vertices_.get();
 	}
 
 	void SetSubComponents(std::vector<Component*>* sub_components) {
 		sub_components_ = std::tr1::shared_ptr<std::vector<Component*>>(sub_components);
 	}
-	const std::vector<Component*>* GetSubComponents() {
+	std::vector<Component*>* GetSubComponents() {
 		return sub_components_.get();
 	}
 

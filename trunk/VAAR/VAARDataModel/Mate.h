@@ -108,42 +108,42 @@ public:
 	void SetID(const char* id) {
 		id_ = std::tr1::shared_ptr<std::string>(new std::string(id));
 	}
-	const char* GetID() {
-		return id_.get()->c_str();
+	char* GetID() {
+		return (char*)id_.get()->c_str();
 	}
 
 	void SetMateType(const MateType type) {
 		type_ = type;
 	}
-	const MateType GetMateType() {
+	MateType GetMateType() {
 		return type_;
 	}
 
 	void SetMinVariation(const double par_value) {
 		min_variation_ = par_value;
 	} 
-	const double GetMinVariation() {
+	double GetMinVariation() {
 		return min_variation_;
 	}
 
 	void SetMaxVariation(const double par_value) {
 		max_variation_ = par_value;
 	} 
-	const double GetMaxVariation() {
+	double GetMaxVariation() {
 		return max_variation_;
 	}
 
 	void SetFlipped(const bool filpped) {
 		is_flipped_ = filpped;
 	}
-	const bool GetFlipped() {
+	bool GetFlipped() {
 		return is_flipped_;
 	}
 
 	void SetMateEntities(std::vector<MateEntity*>* entities) {
 		mate_entities_ = std::tr1::shared_ptr<std::vector<MateEntity*>>(entities);
 	}
-	const std::vector<MateEntity*>* GetMateEntities() {
+	std::vector<MateEntity*>* GetMateEntities() {
 		return mate_entities_.get();
 	}
 private:

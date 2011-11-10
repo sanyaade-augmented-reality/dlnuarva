@@ -44,29 +44,29 @@ public:
 	void SetX(const double x) {
 		x_ = x;
 	}
-	const double GetX() {
+	double GetX() {
 		return x_;
 	}
 
 	void SetY(const double y) {
 		y_ = y;
 	}
-	const double GetY() {
+	double GetY() {
 		return y_;
 	}
 
 	void SetZ(const double z) {
 		z_ = z;
 	}
-	const double GetZ() {
+	double GetZ() {
 		return z_;
 	}
 
 	void SetID(const char* id) {
 		id_ = std::tr1::shared_ptr<std::string>(new std::string(id));
 	}
-	const char* GetID() {
-		return id_.get()->c_str();
+	char* GetID() {
+		return (char*)id_.get()->c_str();
 	}
 private:
 	// ID
