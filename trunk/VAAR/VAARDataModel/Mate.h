@@ -88,6 +88,7 @@ enum MateType {
 class Mate {
 public:
 	// 构造函数和析构函数
+	Mate();
 	Mate(const char* id,
 		 const MateType type,
 		 const double min_variation,

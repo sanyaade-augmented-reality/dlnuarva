@@ -31,6 +31,7 @@ namespace vaar_data {
 class Vertex {
 public:
 	// 构造函数、析构函数
+	Vertex();
 	Vertex(const char* id, const double x, const double y, const double z) {
 		SetID(id);
 		SetX(x);

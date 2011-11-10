@@ -38,6 +38,7 @@ class Component {
 
 public:
 	// 构造函数和析构函数
+	Component();
 	Component(const char* id, 
 		      const char* name, 
 			  std::vector<Face*>* faces,

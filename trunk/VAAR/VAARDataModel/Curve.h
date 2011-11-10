@@ -45,6 +45,7 @@ enum CurveType {
 class Curve  {
 public:
 	// 构造函数和析构函数
+	Curve();
 	Curve(const char* id, const CurveType type, const double params[CURVE_PARAMS_LENGTH]) {
 		SetID(id);
 		SetCurveType(type);

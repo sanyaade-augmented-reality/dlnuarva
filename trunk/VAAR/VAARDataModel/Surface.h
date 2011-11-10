@@ -48,6 +48,7 @@ enum SurfaceType {
 class Surface {
 public:
 	// 构造函数和析构函数
+	Surface();
 	Surface(const char* id, const SurfaceType type, const double params[SURFACE_PARAMS_LENGTH]) {
 		SetID(id);
 		SetSurfaceType(type);

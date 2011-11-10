@@ -37,6 +37,7 @@ namespace vaar_data {
 class Edge {
 public:
 	// 构造函数和析构函数
+	Edge();
 	Edge(const char* id, Curve* curve, const double params[EDGE_PARAMS_LENGTH]) {
 		SetID(id);
 		SetCurve(curve);

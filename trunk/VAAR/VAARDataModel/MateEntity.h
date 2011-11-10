@@ -47,6 +47,7 @@ class MateEntity {
 
 public:
 	// 构造函数和析构函数
+	MateEntity();
 	MateEntity(const char* component_name, 
 		       const double params[MATEENTITY_PARAMS_LENGTH] ,
 			   const MateEntityType type) {

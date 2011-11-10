@@ -36,7 +36,8 @@ class Surface;
 class Face {
 public:
 	// 构造函数和析构函数
-    Face(const char* id, 
+    Face();
+	Face(const char* id, 
 		 Surface* surface, 
 		 std::vector<int>* triangles,
 		 std::vector<int>* normals) {
