@@ -87,6 +87,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DataModelInputDecorator\VertexInputDecorator.h" />
     <ClInclude Include="FileReader.h" />
     <ClInclude Include="StrX.h" />
     <ClInclude Include="XMLReader.h" />

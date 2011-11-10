@@ -14,31 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-// 作者: Yang Yu, alex890714@gmail.com
-// 文件: /VAARDataModel/VAARDataModel.h
-//       这个文件声明了数据包的入口。
+// 作者: 杨雨, alex890714@gmail.com
+// 文件: /FileReader/DataModelInputDecorater/VertexInputDecorater.h
+//       这个文件定义了一个可以将XMLCh(UTF16)类型的数据转换为本地数据的类。
 // 修改历史：
 ///////////////////////////////////////////////////////////////////////////
-#ifndef VAARDATAMODEL_VAARDATEMODEL_H_
-#define VAARDATAMODEL_VAARDATEMODEL_H_
-
-#include "DataModel.h"
-#include "Component.h"
-#include "Curve.h"
-#include "Vertex.h"
-#include "Edge.h"
-#include "Face.h"
-#include "Surface.h"
-#include "Mate.h"
-#include "MateEntity.h"
-
-namespace vaar_data {
-
-// 此类作为入口函数的类，不起任何作用
-class VAARDataModel {
-	__declspec(dllexport) void Main();
-}; // class VAARDataModel
-
-}; // namespace vaar_data.
-
-#endif

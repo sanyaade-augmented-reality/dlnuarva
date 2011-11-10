@@ -103,8 +103,14 @@ __declspec(dllexport) void XMLReader::Read(const char* file_path) {
 		std::cout << StrX(element->getTagName()) << "\n";
 		*/
 
-		Traverse(element);
-		
+		xercesc::DOMNodeList* list = element->getElementsByTagName(xercesc::XMLString::transcode("Mates"));
+		for (int i = 0; i < list->getLength(); ++i) {
+			xercesc::DOMNode* node = list->item(i);
+			xercesc::DOMElement* ele = dynamic_cast<xercesc::DOMElement*>(node);
+			std::cout << StrX(ele->getTagName()) << "\n";
+		}
+		//Traverse(element);
+
 		parser->adoptDocument();
 		delete document;
 		delete errHandler;
