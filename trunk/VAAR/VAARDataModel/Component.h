@@ -38,7 +38,7 @@ class Component {
 
 public:
 	// 构造函数和析构函数
-	Component();
+	Component(){}
 	Component(const char* id, 
 		      const char* name, 
 			  std::vector<Face*>* faces,
@@ -50,7 +50,7 @@ public:
 		SetEdges(edges);
 		SetVertices(vertices);
 	}
-	~Component();
+	~Component(){}
 
 	// getter and setter
 	void SetID(const char* id) {

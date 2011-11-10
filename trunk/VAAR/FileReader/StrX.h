@@ -23,7 +23,7 @@
 #ifndef FILEREADER_STRX_H
 #define FILEREADER_STRX_H
 
-#include <xercesc/util/XercesDefs.hpp>
+#include <xercesc/util/XMLString.hpp>
 
 namespace vaar_file {
 

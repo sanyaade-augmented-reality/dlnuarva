@@ -36,6 +36,9 @@ namespace vaar_data {
 
 // 此类作为入口函数的类，不起任何作用
 class VAARDataModel {
+public:
+	VAARDataModel(){}
+	~VAARDataModel(){}
 	__declspec(dllexport) void Main();
 }; // class VAARDataModel
 

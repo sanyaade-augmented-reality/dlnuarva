@@ -15,36 +15,41 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 // 作者: 杨雨, alex890714@gmail.com
-// 文件: /FileReader/DataModelInputDecorater/VertexInputDecorater.h
-//       这个文件定义了一个负责解析XML文件并填充到Vertrx数据类型的类。
+// 文件: /FileReader/DataModelInputDecorater/CurveInputDecorater.cpp
+//       这个文件实现了一个负责解析XML文件并填充到Curve数据类型的类。
 // 修改历史：
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef FILEREADER_DATAMODELINPUTDECORATOR_VERTEXINPUTDECORATOR_H_
-#define FILEREADER_DATAMODELINPUTDECORATOR_VERTEXINPUTDECORATOR_H_
+#include <xercesc/util/XMLString.hpp>
 
-#include <memory>
-
-#include "..\VAARDataModel\Vertex.h"
-#include "InputDecorator.h"
+#include "CurveInputDecorator.h"
 
 namespace vaar_file {
 
-// 负责解析Vertex节点的XML数据，并填充到Vertex对象
-class VertexInputDecorator : public InputDecorator {
-public:
-	// 构造函数和析构函数
-	VertexInputDecorator(){}
-	~VertexInputDecorator(){}
+// 传入的DOM模型为
+// <Curve> 
+// 	    <CurveType>CIRCLE</CurveType> 
+// 		<Params> 
+// 			<double>-0.05</double>
+// 			<double>-0.050000000000000017</double>
+// 			<double>0</double>
+// 			<double>0</double>
+// 			<double>-0</double>
+// 			<double>-1</double>
+// 			<double>0.01</double>
+// 			<double>0</double>
+// 			<double>0</double>
+// 			<double>0</double>
+// 			<double>0</double> 
+// 		</Params> 
+// </Curve>
+void CurveInputDecorator::Parse(const char *id, xercesc::DOMElement* element) {
 
-	// 解析Vertex节点的XML数据，并填充到Vertex对象。
-	virtual void Parse(const char* id, xercesc::DOMElement* element);
-	// 获取Vertex对象的指针
-	vaar_data::Vertex* GetVertex();
-private:
-	// 操作句柄
-	std::tr1::shared_ptr<vaar_data::Vertex> vertex_;
-}; // class VertrxInputDecorator
+}
 
-} // namespace vaarfile
-#endif
+// 获取Curve对象的指针
+vaar_data::Curve* CurveInputDecorator::GetCurve() {
+	return curve_.get();
+}
+
+} // namespace vaar_file

@@ -43,7 +43,7 @@ class DataModel {
 
 public:
 	// 构造函数与虚构函数
-	DataModel();
+	DataModel(){}
 	DataModel(
 		      Component* root,
 			  std::vector<Mate*>* mates,
@@ -56,7 +56,7 @@ public:
 		SetNormals(normals);
 		SetRelation(relation_map);
 	}
-	~DataModel();
+	~DataModel(){}
 
 	// getter and setter
 	// 设置装配模型树

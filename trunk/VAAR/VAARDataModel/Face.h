@@ -36,7 +36,7 @@ class Surface;
 class Face {
 public:
 	// 构造函数和析构函数
-    Face();
+	Face(){}
 	Face(const char* id, 
 		 Surface* surface, 
 		 std::vector<int>* triangles,
@@ -46,7 +46,7 @@ public:
 		SetTriangles(triangles);
 		SetNormals(normals);
 	}
-	~Face();
+	~Face(){}
 
 	// getter and setter
 	void SetID(const char* id) {

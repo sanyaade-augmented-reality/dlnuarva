@@ -33,10 +33,28 @@
     <ClInclude Include="DataModelInputDecorator\VertexInputDecorator.h">
       <Filter>头文件\DataModelInputDecorator</Filter>
     </ClInclude>
+    <ClInclude Include="DataModelInputDecorator\InputDecorator.h">
+      <Filter>头文件\DataModelInputDecorator</Filter>
+    </ClInclude>
+    <ClInclude Include="DataModelInputDecorator\EdgeInputDecorator.h">
+      <Filter>头文件\DataModelInputDecorator</Filter>
+    </ClInclude>
+    <ClInclude Include="DataModelInputDecorator\CurveInputDecorator.h">
+      <Filter>头文件\DataModelInputDecorator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="XMLReader.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DataModelInputDecorator\VertexInputDecorator.cpp">
+      <Filter>源文件\DataModelInputDecorator</Filter>
+    </ClCompile>
+    <ClCompile Include="DataModelInputDecorator\EdgeInputDecortor.cpp">
+      <Filter>源文件\DataModelInputDecorator</Filter>
+    </ClCompile>
+    <ClCompile Include="DataModelInputDecorator\CurveInputDecorator.cpp">
+      <Filter>源文件\DataModelInputDecorator</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

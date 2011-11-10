@@ -32,46 +32,48 @@
 
 #include "XMLReader.h"
 #include "StrX.h"
+#include "DataModelInputDecorator/InputDecorator.h"
+#include "DataModelInputDecorator/VertexInputDecorator.h"
 
 namespace vaar_file {
-
-void Traverse(xercesc::DOMElement *element) {
-	if (NULL == element)
-		return;
-
-	std::cout << StrX(element->getTagName()) << "\n";
-
-	Traverse(element->getFirstElementChild());
-
-	element = element->getNextElementSibling();
-	while (NULL != element) {
-		Traverse(element);
-		element = element->getNextElementSibling();
-	}
-}
+// 
+// void Traverse(xercesc::DOMElement *element) {
+// 	if (NULL == element)
+// 		return;
+// 
+// 	std::cout << StrX(element->getTagName()) << "\n";
+// 
+// 	Traverse(element->getFirstElementChild());
+// 
+// 	element = element->getNextElementSibling();
+// 	while (NULL != element) {
+// 		Traverse(element);
+// 		element = element->getNextElementSibling();
+// 	}
+// }
 
 __declspec(dllexport) void XMLReader::Read(const char* file_path) {
 	try {
-		// initialize the xerces.
+		// 初始化xerces
 		xercesc::XMLPlatformUtils::Initialize();
    
 		xercesc::XercesDOMParser *parser = new xercesc::XercesDOMParser();
 		if (NULL == parser)
 			return;
 
-		// configuration.
+		// 配置
 		parser->setValidationScheme(xercesc::XercesDOMParser::Val_Auto);
 		parser->setDoNamespaces(false);
 		parser->setDoSchema(false);
 
-		// error handling configuration.
+		// 配置错误处理
 		xercesc::ErrorHandler* errHandler = (xercesc::ErrorHandler*) new xercesc::HandlerBase();
 		parser->setErrorHandler(errHandler);
 
-		// parse file.
+		// 解析文件
 		parser->parse(file_path);
 		
-		// get document.
+		// 获取DOM文档模型
 		xercesc::DOMDocument* document = parser->getDocument();
 		if (NULL == document) {
 			parser->adoptDocument();
@@ -89,26 +91,33 @@ __declspec(dllexport) void XMLReader::Read(const char* file_path) {
 			return;
 		}
 
-		/*
-		std::cout << StrX(element->getTagName()) << "\n";
-		element = element->getFirstElementChild();
+		xercesc::DOMNodeList* list = element->getElementsByTagName(xercesc::XMLString::transcode("SubComponents"));
+		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
+		list = element->getElementsByTagName(xercesc::XMLString::transcode("SWComponent"));
+		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
+		list = element->getElementsByTagName(xercesc::XMLString::transcode("Bodies"));
+		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
+		list = element->getElementsByTagName(xercesc::XMLString::transcode("SWVertex"));
+		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
+		
 		std::cout << StrX(element->getTagName()) << "\n";
 		std::cout << StrX(element->getTextContent()) << "\n";
+
+		VertexInputDecorator* input = new VertexInputDecorator();
+		input->Parse("", element);
+		vaar_data::Vertex* vertex = input->GetVertex();
+
+		std::cout << vertex->GetX() << "\n";
+		std::cout << vertex->GetY() << "\n";
+		std::cout << vertex->GetZ() << "\n";
+
+// 		for (XMLSize_t i = 0; i < list->getLength(); ++i) {
+// 			xercesc::DOMNode* node = list->item(i);
+// 			xercesc::DOMElement* ele = dynamic_cast<xercesc::DOMElement*>(node);
+// 			std::cout << StrX(ele->getTagName()) << "\n";
+// 		}
+
 		
-
-		std::cout << StrX(element->getTagName()) << "\n";
-		element = element->getFirstElementChild();
-		std::cout << StrX(element->getTagName()) << "\n";
-		element = element->getNextElementSibling();
-		std::cout << StrX(element->getTagName()) << "\n";
-		*/
-
-		xercesc::DOMNodeList* list = element->getElementsByTagName(xercesc::XMLString::transcode("Mates"));
-		for (int i = 0; i < list->getLength(); ++i) {
-			xercesc::DOMNode* node = list->item(i);
-			xercesc::DOMElement* ele = dynamic_cast<xercesc::DOMElement*>(node);
-			std::cout << StrX(ele->getTagName()) << "\n";
-		}
 		//Traverse(element);
 
 		parser->adoptDocument();

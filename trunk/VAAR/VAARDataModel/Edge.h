@@ -28,22 +28,22 @@
 #include <memory>
 #include <string>
 
-//声明并引入Curve类
-class vaar_data::Curve;
-
 namespace vaar_data {
 
+//声明并引入Curve类
+class Curve;
+	
 //线段类
 class Edge {
 public:
 	// 构造函数和析构函数
-	Edge();
+	Edge(){}
 	Edge(const char* id, Curve* curve, const double params[EDGE_PARAMS_LENGTH]) {
 		SetID(id);
 		SetCurve(curve);
 		SetParams(params);
 	}
-	~Edge();
+	~Edge(){}
 
 	// getter and setter
 	// 设置params属性

@@ -15,36 +15,22 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 // 作者: 杨雨, alex890714@gmail.com
-// 文件: /FileReader/DataModelInputDecorater/VertexInputDecorater.h
-//       这个文件定义了一个负责解析XML文件并填充到Vertrx数据类型的类。
+// 文件: /FileReader/DataModelInputDecorater/InputDecorater.h
+//       这个文件定义了解析XML数据并填充到数据类型的接口。
 // 修改历史：
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef FILEREADER_DATAMODELINPUTDECORATOR_VERTEXINPUTDECORATOR_H_
-#define FILEREADER_DATAMODELINPUTDECORATOR_VERTEXINPUTDECORATOR_H_
+#ifndef FILEREADER_DATAMODELINPUTDECORATOR_INPUTDECORATOR_H_
+#define FILEREADER_DATAMODELINPUTDECORATOR_INPUTDECORATOR_H_
 
-#include <memory>
-
-#include "..\VAARDataModel\Vertex.h"
-#include "InputDecorator.h"
+#include <xercesc/dom/DOMElement.hpp>
 
 namespace vaar_file {
 
-// 负责解析Vertex节点的XML数据，并填充到Vertex对象
-class VertexInputDecorator : public InputDecorator {
+// 定义操作接口
+class InputDecorator {
 public:
-	// 构造函数和析构函数
-	VertexInputDecorator(){}
-	~VertexInputDecorator(){}
-
-	// 解析Vertex节点的XML数据，并填充到Vertex对象。
-	virtual void Parse(const char* id, xercesc::DOMElement* element);
-	// 获取Vertex对象的指针
-	vaar_data::Vertex* GetVertex();
-private:
-	// 操作句柄
-	std::tr1::shared_ptr<vaar_data::Vertex> vertex_;
-}; // class VertrxInputDecorator
-
-} // namespace vaarfile
+	virtual void Parse(const char* id, xercesc::DOMElement* element) = 0;
+}; // class InputDecorator
+}; // namespace vaar_file
 #endif
