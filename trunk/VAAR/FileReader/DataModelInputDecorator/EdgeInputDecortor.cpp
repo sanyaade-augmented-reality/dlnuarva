@@ -92,6 +92,7 @@ void EdgeInputDecorator::Parse(const char *id, xercesc::DOMElement* element) {
 // 	if (NULL != input)
 // 		delete input;
 
+	// ´´½¨²¢Ìî³ä
 	edge_ = std::tr1::shared_ptr<vaar_data::Edge>(new vaar_data::Edge(id, curve, params));
 }
 

@@ -109,6 +109,8 @@ vaar_data::SurfaceType SurfaceInputDecorator::GetSurfaceType(const char* name) {
 		return vaar_data::SurfaceType::SREV_SURFACE;
 	if (0 == strcmp(name, "TORUS"))
 		return vaar_data::SurfaceType::TORUS_SURFACE;
+
+	return vaar_data::SurfaceType::PLANE_SURFACE;
 }
 
 } // namaspace vaar_file

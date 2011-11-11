@@ -104,6 +104,8 @@ vaar_data::CurveType CurveInputDecorator::GetCurveType(const char* name) {
 		return vaar_data::CurveType::SPCURVE_CURVE;
 	if (0 == strcmp(name, "TRIMMED"))
 		return vaar_data::CurveType::TRIMMED_CURVE;
+
+	return vaar_data::CurveType::LINE_CURVE;
 }
 
 } // namespace vaar_file

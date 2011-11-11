@@ -37,6 +37,7 @@
 #include "DataModelInputDecorator/CurveInputDecorator.h"
 #include "DataModelInputDecorator/EdgeInputDecorator.h"
 #include "DataModelInputDecorator/SurfaceInputDecorator.h"
+#include "DataModelInputDecorator/FaceInputDecorator.h"
 
 namespace vaar_file {
 // 
@@ -116,7 +117,12 @@ __declspec(dllexport) void XMLReader::Read(const char* file_path) {
 		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
 		*/
 
+		/* Test SurfaceInputDecoratorTest
 		list = element->getElementsByTagName(xercesc::XMLString::transcode("Surface"));
+		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
+		*/ 
+		// Test FaceInputDecoratorTest
+		list = element->getElementsByTagName(xercesc::XMLString::transcode("SWFace"));
 		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
 
 		std::cout << StrX(element->getTagName()) << "\n";
@@ -174,6 +180,7 @@ __declspec(dllexport) void XMLReader::Read(const char* file_path) {
 		}
 		*/
 
+		/* Test SurfaceInputDecorator
 		SurfaceInputDecorator input;
 		input.Parse("test", element);
 		vaar_data::Surface* surface = input.GetSurface();
@@ -186,6 +193,28 @@ __declspec(dllexport) void XMLReader::Read(const char* file_path) {
 		for (int i = 0; i < length; ++i) {
 			std::cout << params[i] << "\n";
 		}
+		*/
+
+		// Test FaceInputDecorator
+		osg::ref_ptr<osg::Vec3Array> triangles = new osg::Vec3Array;
+		osg::ref_ptr<osg::Vec3Array> normals = new osg::Vec3Array;
+		FaceInputDecorator input(triangles, normals);
+		input.Parse("face01", element);
+		vaar_data::Face* face = input.GetFace();
+		vaar_data::Surface* surface = face->GetSurface();
+
+		// Output Surface
+		std::cout << surface->GetID() << "\n";
+		int length;
+		double* params;
+		std::cout << surface->GetSurfaceType() << "\n";
+		params = surface->GetParams(length);
+		for (int i = 0; i < length; ++i) {
+			std::cout << params[i] << "\n";
+		}
+
+		// Output Face
+		std::cout << face->GetID() << "\n";
 
 		parser->adoptDocument();
 		delete document;

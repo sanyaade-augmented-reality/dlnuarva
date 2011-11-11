@@ -25,22 +25,37 @@
 
 #include <memory>
 
+#include <osg/ref_ptr>
+#include <osg/Array>
+
 #include "InputDecorator.h"
 #include "..\VAARDataModel\Face.h"
 
 namespace vaar_file {
 
-// 负责解析Face节点的XML数据，并填充到Face对象
+// 负责解析SWFace节点的XML数据，并填充到Face对象
 class FaceInputDecorator : public InputDecorator {
 
 public:
 	// 构造函数和析构函数
+	FaceInputDecorator(osg::ref_ptr<osg::Vec3Array>& vertices, osg::ref_ptr<osg::Vec3Array>& normals) {
+		vertices_ = vertices;
+		normals_ = normals;
+	}
 	FaceInputDecorator() {}
 	~FaceInputDecorator() {}
 
+	// 解析SWFace节点的XML数据，并填充到Face对象。
+	virtual void Parse(const char* id, xercesc::DOMElement* element);
+	// 获取Face对象指针
+	vaar_data::Face* GetFace();
 private:
 	// 操作句柄
 	std::tr1::shared_ptr<vaar_data::Face> face_;
+	// 三角顶点列表句柄
+	osg::ref_ptr<osg::Vec3Array> vertices_;
+	// 三角顶点法向量列表句柄
+	osg::ref_ptr<osg::Vec3Array> normals_;
 }; // class FaceInputDecorator
 
 } // namespace vaar_file
