@@ -89,7 +89,9 @@
   <ItemGroup>
     <ClInclude Include="DataModelInputDecorator\CurveInputDecorator.h" />
     <ClInclude Include="DataModelInputDecorator\EdgeInputDecorator.h" />
+    <ClInclude Include="DataModelInputDecorator\FaceInputDecorator.h" />
     <ClInclude Include="DataModelInputDecorator\InputDecorator.h" />
+    <ClInclude Include="DataModelInputDecorator\SurfaceInputDecorator.h" />
     <ClInclude Include="DataModelInputDecorator\VertexInputDecorator.h" />
     <ClInclude Include="FileReader.h" />
     <ClInclude Include="StrX.h" />
@@ -98,6 +100,8 @@
   <ItemGroup>
     <ClCompile Include="DataModelInputDecorator\CurveInputDecorator.cpp" />
     <ClCompile Include="DataModelInputDecorator\EdgeInputDecortor.cpp" />
+    <ClCompile Include="DataModelInputDecorator\FaceInputDecorator.cpp" />
+    <ClCompile Include="DataModelInputDecorator\SurfaceInputDecorator.cpp" />
     <ClCompile Include="DataModelInputDecorator\VertexInputDecorator.cpp" />
     <ClCompile Include="XMLReader.cpp" />
   </ItemGroup>

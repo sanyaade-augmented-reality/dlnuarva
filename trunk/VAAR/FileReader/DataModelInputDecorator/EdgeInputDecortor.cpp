@@ -76,17 +76,17 @@ void EdgeInputDecorator::Parse(const char *id, xercesc::DOMElement* element) {
 	if (NULL != element && 
 		0 == strcmp("Params", xercesc::XMLString::transcode(element->getTagName()))) {
 
-			current_element = element->getFirstElementChild();
-			do {
-				sscanf_s(
-					xercesc::XMLString::transcode(current_element->getTextContent()),
-					"%lf",
-					&params[i++]
-				);
-			} while (
-				current_element != element->getLastElementChild(),
-				current_element = current_element->getNextElementSibling()
+		current_element = element->getFirstElementChild();
+		do {
+			sscanf_s(
+				xercesc::XMLString::transcode(current_element->getTextContent()),
+				"%lf",
+				&params[i++]
 			);
+		} while (
+			current_element != element->getLastElementChild(),
+			current_element = current_element->getNextElementSibling()
+		);
 	}
 
 // 	if (NULL != input)

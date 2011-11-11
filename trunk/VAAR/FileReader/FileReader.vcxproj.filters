@@ -42,6 +42,12 @@
     <ClInclude Include="DataModelInputDecorator\CurveInputDecorator.h">
       <Filter>头文件\DataModelInputDecorator</Filter>
     </ClInclude>
+    <ClInclude Include="DataModelInputDecorator\SurfaceInputDecorator.h">
+      <Filter>头文件\DataModelInputDecorator</Filter>
+    </ClInclude>
+    <ClInclude Include="DataModelInputDecorator\FaceInputDecorator.h">
+      <Filter>头文件\DataModelInputDecorator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="XMLReader.cpp">
@@ -54,6 +60,12 @@
       <Filter>源文件\DataModelInputDecorator</Filter>
     </ClCompile>
     <ClCompile Include="DataModelInputDecorator\CurveInputDecorator.cpp">
+      <Filter>源文件\DataModelInputDecorator</Filter>
+    </ClCompile>
+    <ClCompile Include="DataModelInputDecorator\SurfaceInputDecorator.cpp">
+      <Filter>源文件\DataModelInputDecorator</Filter>
+    </ClCompile>
+    <ClCompile Include="DataModelInputDecorator\FaceInputDecorator.cpp">
       <Filter>源文件\DataModelInputDecorator</Filter>
     </ClCompile>
   </ItemGroup>

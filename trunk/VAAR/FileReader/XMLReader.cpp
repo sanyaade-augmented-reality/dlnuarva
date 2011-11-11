@@ -36,6 +36,7 @@
 #include "DataModelInputDecorator/VertexInputDecorator.h"
 #include "DataModelInputDecorator/CurveInputDecorator.h"
 #include "DataModelInputDecorator/EdgeInputDecorator.h"
+#include "DataModelInputDecorator/SurfaceInputDecorator.h"
 
 namespace vaar_file {
 // 
@@ -110,7 +111,12 @@ __declspec(dllexport) void XMLReader::Read(const char* file_path) {
 		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
 		*/
 
+		/* Test EdgeInputDecoratorTest
 		list = element->getElementsByTagName(xercesc::XMLString::transcode("SWEdge"));
+		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
+		*/
+
+		list = element->getElementsByTagName(xercesc::XMLString::transcode("Surface"));
 		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
 
 		std::cout << StrX(element->getTagName()) << "\n";
@@ -141,6 +147,7 @@ __declspec(dllexport) void XMLReader::Read(const char* file_path) {
 		}
 		*/
 
+		/* Test EdgeInputDecoratorTest
 		EdgeInputDecorator input;
 		input.Parse("edge01", element);
 		vaar_data::Edge* edge = input.GetEdge();
@@ -165,15 +172,20 @@ __declspec(dllexport) void XMLReader::Read(const char* file_path) {
 		for (int i = 0; i < length; ++i) {
 			std::cout << params[i] << "\n";
 		}
+		*/
 
-// 		for (XMLSize_t i = 0; i < list->getLength(); ++i) {
-// 			xercesc::DOMNode* node = list->item(i);
-// 			xercesc::DOMElement* ele = dynamic_cast<xercesc::DOMElement*>(node);
-// 			std::cout << StrX(ele->getTagName()) << "\n";
-// 		}
+		SurfaceInputDecorator input;
+		input.Parse("test", element);
+		vaar_data::Surface* surface = input.GetSurface();
 
-		
-		//Traverse(element);
+		std::cout << surface->GetID() << "\n";
+		int length;
+		double* params;
+		std::cout << surface->GetSurfaceType() << "\n";
+		params = surface->GetParams(length);
+		for (int i = 0; i < length; ++i) {
+			std::cout << params[i] << "\n";
+		}
 
 		parser->adoptDocument();
 		delete document;
