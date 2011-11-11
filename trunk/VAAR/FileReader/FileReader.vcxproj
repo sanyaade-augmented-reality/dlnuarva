@@ -87,6 +87,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DataModelInputDecorator\ComponentInputDecorator.h" />
     <ClInclude Include="DataModelInputDecorator\CurveInputDecorator.h" />
     <ClInclude Include="DataModelInputDecorator\EdgeInputDecorator.h" />
     <ClInclude Include="DataModelInputDecorator\FaceInputDecorator.h" />
@@ -98,6 +99,7 @@
     <ClInclude Include="XMLReader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DataModelInputDecorator\ComponentInputDecorator.cpp" />
     <ClCompile Include="DataModelInputDecorator\CurveInputDecorator.cpp" />
     <ClCompile Include="DataModelInputDecorator\EdgeInputDecortor.cpp" />
     <ClCompile Include="DataModelInputDecorator\FaceInputDecorator.cpp" />

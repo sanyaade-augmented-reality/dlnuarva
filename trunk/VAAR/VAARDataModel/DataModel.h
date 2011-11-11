@@ -105,7 +105,7 @@ private:
 	osg::ref_ptr<osg::Vec3Array> triangle_vertices_;
 	// 三角面片顶点法向量列表
 	osg::ref_ptr<osg::Vec3Array> triangle_normals_;
-	// ComponentID, EdgeID， FaceID到父节点的映射关系
+	// ComponentID, EdgeID, VertexID, FaceID到父节点的映射关系
 	std::tr1::shared_ptr<std::hash_map<char*, Component*>> component_parent_map_;
 	// 其它映射关系
 
