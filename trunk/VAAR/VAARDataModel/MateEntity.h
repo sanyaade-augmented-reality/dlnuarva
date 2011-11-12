@@ -48,9 +48,12 @@ class MateEntity {
 public:
 	// 构造函数和析构函数
 	MateEntity(){}
-	MateEntity(const char* component_name, 
-		       const double params[MATEENTITY_PARAMS_LENGTH] ,
-			   const MateEntityType type) {
+	MateEntity(
+		const char* id,
+		const char* component_name, 
+		const double params[MATEENTITY_PARAMS_LENGTH] ,
+		const MateEntityType type) {
+
 		SetComponentName(component_name);
 		SetParams(params);
 		SetMateEntityType(type);
@@ -58,6 +61,13 @@ public:
 	~MateEntity(){}
 
 	// getter and setter
+	void SetID(const char* id) {
+		id_ = std::tr1::shared_ptr<std::string>(new std::string(id));
+	}
+	char* GetID() {
+		return (char*)id_.get()->c_str();
+	}
+
 	void SetComponentName(const char* name) {
 		component_name_ = std::tr1::shared_ptr<std::string>(new std::string(name));
 	}
@@ -91,6 +101,8 @@ public:
 	}
 
 private:
+	// ID
+	std::tr1::shared_ptr<std::string> id_;
 	// 实体所在组件的名称
 	std::tr1::shared_ptr<std::string> component_name_;
 	// 组件句柄

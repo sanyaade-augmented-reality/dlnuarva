@@ -67,6 +67,9 @@ void SurfaceInputDecorator::Parse(const char *id, xercesc::DOMElement* element) 
 		current_element = element->getFirstElementChild();
 		
 		do {
+			if (current_element == NULL)
+				break;
+
 			sscanf_s(
 				xercesc::XMLString::transcode(current_element->getTextContent()),
 				"%lf",

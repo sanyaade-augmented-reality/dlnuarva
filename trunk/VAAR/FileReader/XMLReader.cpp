@@ -121,12 +121,14 @@ __declspec(dllexport) void XMLReader::Read(const char* file_path) {
 		list = element->getElementsByTagName(xercesc::XMLString::transcode("Surface"));
 		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
 		*/ 
-		// Test FaceInputDecoratorTest
+
+		/* Test FaceInputDecoratorTest
 		list = element->getElementsByTagName(xercesc::XMLString::transcode("SWFace"));
 		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
-
+		
 		std::cout << StrX(element->getTagName()) << "\n";
 		std::cout << StrX(element->getTextContent()) << "\n";
+		*/
 
 		/* Test VertexInputDecorator
 		VertexInputDecorator* input = new VertexInputDecorator();
