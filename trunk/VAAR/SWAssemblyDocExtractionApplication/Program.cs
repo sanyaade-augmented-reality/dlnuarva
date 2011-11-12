@@ -63,9 +63,9 @@ namespace SWAssemblyDocExtractionApplication {
             swComponent.IsRoot = component.IsRoot();
 
             //提取配合,存放在RootComponent节点
-            if (swComponent.IsRoot) {
-                swComponent.Mates = GetSWMatesOfRootComponent(component);
-            }
+            //if (swComponent.IsRoot) {
+            swComponent.Mates = GetSWMatesOfRootComponent(component);
+            //}
 
             //包围盒
             double[] box = null;
@@ -75,7 +75,11 @@ namespace SWAssemblyDocExtractionApplication {
                 //发生异常，说明该组件（根组件）没有包围盒
                 box = null;
             }
-            swComponent.BoundingBox = CreateSWBoundingBox(box);
+            if (box == null) {
+                swComponent.BoundingBox = CreateSWBoundingBox(box);
+            } else {
+                swComponent.BoundingBox = new SWBoundingBox();
+            }
 
             //提取Body
             object bodyInfo;

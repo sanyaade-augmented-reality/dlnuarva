@@ -40,17 +40,17 @@ class ComponentInputDecorator : public InputDecorator{
 public:
 	// 构造函数和析构函数
 	ComponentInputDecorator(
-		osg::ref_ptr<osg::Vec3Array>& vertices, 
-		osg::ref_ptr<osg::Vec3Array>& normals,
+		//osg::ref_ptr<osg::Vec3Array>& vertices, 
+		//osg::ref_ptr<osg::Vec3Array>& normals,
 		std::tr1::shared_ptr<std::hash_map<std::string, vaar_data::Component*>>& component_parent_map) {
-		vertices_ = vertices;
-		normals_ = normals;
+		//vertices_ = vertices;
+		//normals_ = normals;
 		component_parent_map_ = component_parent_map;
 	}
 	ComponentInputDecorator() {}
 	~ComponentInputDecorator() {}
 
-	// 解析SWFace节点的XML数据，并填充到Face对象。
+	// 解析SWComponent节点的XML数据，并填充到Component对象。
 	virtual void Parse(const char* id, xercesc::DOMElement* element);
 	// 获取Face对象指针
 	vaar_data::Component* GetComponent();
@@ -58,9 +58,9 @@ private:
 	// 操作句柄
 	std::tr1::shared_ptr<vaar_data::Component> component_;
 	// 三角顶点列表句柄
-	osg::ref_ptr<osg::Vec3Array> vertices_;
+	//osg::ref_ptr<osg::Vec3Array> vertices_;
 	// 三角顶点法向量列表句柄
-	osg::ref_ptr<osg::Vec3Array> normals_;
+	//osg::ref_ptr<osg::Vec3Array> normals_;
 	// ComponentID, EdgeID, VertexID, FaceID到父节点的映射关系
 	std::tr1::shared_ptr<std::hash_map<std::string, vaar_data::Component*>> component_parent_map_;
 

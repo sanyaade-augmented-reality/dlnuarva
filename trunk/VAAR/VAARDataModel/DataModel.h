@@ -47,13 +47,13 @@ public:
 	DataModel(
 		      Component* root,
 			  std::vector<Mate*>* mates,
-			  osg::Vec3Array* triangles,
-			  osg::Vec3Array* normals,
+			  //osg::Vec3Array* triangles,
+			  //osg::Vec3Array* normals,
 			  std::hash_map<std::string, Component*>* relation_map) {
 		SetRoot(root);
 		SetMates(mates);
-		SetTriangles(triangles);
-		SetNormals(normals);
+		//SetTriangles(triangles);
+		//SetNormals(normals);
 		SetRelation(relation_map);
 	}
 	~DataModel(){}
@@ -74,7 +74,7 @@ public:
 	std::vector<Mate*>* GetMates() {
 		mates_.get();
 	}
-
+	/*
 	void SetTriangles(osg::Vec3Array* triangles) {
 		triangle_vertices_ = osg::ref_ptr<osg::Vec3Array>(triangles);
 	}
@@ -88,6 +88,7 @@ public:
 	osg::Vec3Array* GetNormals() {
 		return triangle_normals_.get();
 	}
+	*/
 
 	void SetRelation(std::hash_map<std::string, Component*>* relation_map) {
 		component_parent_map_ = std::tr1::shared_ptr<std::hash_map<std::string, Component*>>(relation_map);
@@ -96,15 +97,18 @@ public:
 		return component_parent_map_.get();
 	}
 
+	std::tr1::shared_ptr<std::hash_map<std::string, Component*>> GetRefRelation() {
+		return component_parent_map_;
+	}
 private:
 	// 装配数据模型的根节点（树形拓扑结构）
 	std::tr1::shared_ptr<Component> root_;
 	// 配合列表
 	std::tr1::shared_ptr<std::vector<Mate*>> mates_;
 	// 三角面片顶点列表
-	osg::ref_ptr<osg::Vec3Array> triangle_vertices_;
+	//osg::ref_ptr<osg::Vec3Array> triangle_vertices_;
 	// 三角面片顶点法向量列表
-	osg::ref_ptr<osg::Vec3Array> triangle_normals_;
+	//osg::ref_ptr<osg::Vec3Array> triangle_normals_;
 	// ComponentID, EdgeID, VertexID, FaceID到父节点的映射关系
 	std::tr1::shared_ptr<std::hash_map<std::string, Component*>> component_parent_map_;
 	// 其它映射关系

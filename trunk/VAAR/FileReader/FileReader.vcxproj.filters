@@ -57,6 +57,9 @@
     <ClInclude Include="DataModelInputDecorator\MateInputDecorator.h">
       <Filter>头文件\DataModelInputDecorator</Filter>
     </ClInclude>
+    <ClInclude Include="DataModelInputDecorator\DataModelInputDecorator.h">
+      <Filter>头文件\DataModelInputDecorator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="XMLReader.cpp">
@@ -84,6 +87,9 @@
       <Filter>源文件\DataModelInputDecorator</Filter>
     </ClCompile>
     <ClCompile Include="DataModelInputDecorator\MateInputDecorator.cpp">
+      <Filter>源文件\DataModelInputDecorator</Filter>
+    </ClCompile>
+    <ClCompile Include="DataModelInputDecorator\DataModelInputDecorator.cpp">
       <Filter>源文件\DataModelInputDecorator</Filter>
     </ClCompile>
   </ItemGroup>

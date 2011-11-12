@@ -45,9 +45,13 @@ namespace vaar_file {
 // 			<Vertices>
 // 		</SWBody> 
 // 	</Bodies> 
+//  <Mates />
 // </SWComponent>
 void ComponentInputDecorator::Parse(const char* id, xercesc::DOMElement* element) {
-	if (NULL == element || !vertices_.valid() || !normals_.valid() || NULL == component_parent_map_.get())
+	//if (NULL == element || !vertices_.valid() || !normals_.valid() || NULL == component_parent_map_.get())
+	//	return;
+
+	if (NULL == id || NULL == element || NULL == component_parent_map_.get())
 		return;
 
 	xercesc::DOMElement* current_element =NULL;
@@ -90,7 +94,8 @@ void ComponentInputDecorator::Parse(const char* id, xercesc::DOMElement* element
 			sub_component_id += "_sub" + sub_component_index;
 			++sub_component_index;
 
-			component_input_decorator = new ComponentInputDecorator(vertices_, normals_, component_parent_map_);
+			//component_input_decorator = new ComponentInputDecorator(vertices_, normals_, component_parent_map_);
+			component_input_decorator = new ComponentInputDecorator(component_parent_map_);
 			component_input_decorator->Parse(sub_component_id.c_str(), current_element);
 			sub_component = component_input_decorator->GetComponent();
 
@@ -129,7 +134,11 @@ void ComponentInputDecorator::Parse(const char* id, xercesc::DOMElement* element
 				std::string face_id = component_id;
 				face_id += "_face" + i;
 
-				face_input_decorator = new FaceInputDecorator();
+				//face_input_decorator = new FaceInputDecorator();
+				face_input_decorator = new FaceInputDecorator(
+					component_->GetRefPtrTriangles(), 
+					component_->GetRefPtrNormals()
+				);
 				face_input_decorator->Parse(face_id.c_str(), current_element);
 				face = face_input_decorator->GetFace();
 

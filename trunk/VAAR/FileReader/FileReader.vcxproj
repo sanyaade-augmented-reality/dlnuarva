@@ -89,6 +89,7 @@
   <ItemGroup>
     <ClInclude Include="DataModelInputDecorator\ComponentInputDecorator.h" />
     <ClInclude Include="DataModelInputDecorator\CurveInputDecorator.h" />
+    <ClInclude Include="DataModelInputDecorator\DataModelInputDecorator.h" />
     <ClInclude Include="DataModelInputDecorator\EdgeInputDecorator.h" />
     <ClInclude Include="DataModelInputDecorator\FaceInputDecorator.h" />
     <ClInclude Include="DataModelInputDecorator\InputDecorator.h" />
@@ -103,6 +104,7 @@
   <ItemGroup>
     <ClCompile Include="DataModelInputDecorator\ComponentInputDecorator.cpp" />
     <ClCompile Include="DataModelInputDecorator\CurveInputDecorator.cpp" />
+    <ClCompile Include="DataModelInputDecorator\DataModelInputDecorator.cpp" />
     <ClCompile Include="DataModelInputDecorator\EdgeInputDecortor.cpp" />
     <ClCompile Include="DataModelInputDecorator\FaceInputDecorator.cpp" />
     <ClCompile Include="DataModelInputDecorator\MateEntityInputDecorator.cpp" />

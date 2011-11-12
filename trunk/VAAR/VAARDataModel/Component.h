@@ -27,6 +27,9 @@
 #include <vector>
 #include <string>
 
+#include <osg\Array>
+#include <osg\ref_ptr>
+
 namespace vaar_data {
 
 //声明并引入
@@ -38,7 +41,10 @@ class Component {
 
 public:
 	// 构造函数和析构函数
-	Component(){}
+	Component(){
+		triangle_vertices_ = new osg::Vec3Array;
+		triangle_normals_ = new osg::Vec3Array;
+	}
 	Component(const char* id, 
 		      const char* name, 
 			  std::vector<Face*>* faces,
@@ -49,6 +55,9 @@ public:
 		SetFaces(faces);
 		SetEdges(edges);
 		SetVertices(vertices);
+
+		triangle_vertices_ = new osg::Vec3Array;
+		triangle_normals_ = new osg::Vec3Array;
 	}
 	~Component(){}
 
@@ -95,6 +104,28 @@ public:
 		return sub_components_.get();
 	}
 
+	void SetTriangles(osg::Vec3Array* triangles) {
+		triangle_vertices_ = osg::ref_ptr<osg::Vec3Array>(triangles);
+	}
+	osg::Vec3Array* GetTriangles() {
+		return triangle_vertices_.get();
+	}
+
+	void SetNormals(osg::Vec3Array* normals) {
+		triangle_normals_ = osg::ref_ptr<osg::Vec3Array>(normals);
+	}
+	osg::Vec3Array* GetNormals() {
+		return triangle_normals_.get();
+	}
+
+	osg::ref_ptr<osg::Vec3Array> GetRefPtrTriangles() {
+		return triangle_vertices_;
+	}
+
+	osg::ref_ptr<osg::Vec3Array> GetRefPtrNormals() {
+		return triangle_normals_;
+	}
+
 private:
 	// ID
 	std::tr1::shared_ptr<std::string> id_;
@@ -108,6 +139,10 @@ private:
 	std::tr1::shared_ptr<std::vector<Vertex*>> vertices_;
 	// 子装配体
 	std::tr1::shared_ptr<std::vector<Component*>> sub_components_;
+	// 三角面片顶点列表
+	osg::ref_ptr<osg::Vec3Array> triangle_vertices_;
+	// 三角面片顶点法向量列表
+	osg::ref_ptr<osg::Vec3Array> triangle_normals_;
 
 	// 包围盒
 	// 局部坐标系到世界坐标系的转换矩阵
