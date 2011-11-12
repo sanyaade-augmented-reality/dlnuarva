@@ -20,7 +20,14 @@
 // 修改历史：
 ///////////////////////////////////////////////////////////////////////////
 
+#include <xercesc/util/XMLString.hpp>
+#include <xercesc/dom/DOMNodeList.hpp>
+
 #include "ComponentInputDecorator.h"
+#include "FaceInputDecorator.h"
+#include "EdgeInputDecorator.h"
+#include "VertexInputDecorator.h"
+#include "../VAARDataModel/Component.h"
 
 namespace vaar_file {
 
@@ -40,8 +47,162 @@ namespace vaar_file {
 // 	</Bodies> 
 // </SWComponent>
 void ComponentInputDecorator::Parse(const char* id, xercesc::DOMElement* element) {
-	if (NULL == element || !vertices_.valid() || !normals_.valid())
+	if (NULL == element || !vertices_.valid() || !normals_.valid() || NULL == component_parent_map_.get())
 		return;
+
+	xercesc::DOMElement* current_element =NULL;
+	xercesc::DOMNodeList* list = NULL;
+	component_ = std::tr1::shared_ptr<vaar_data::Component>(new vaar_data::Component);
+
+	// 解析Name
+	std::string component_name;
+	element = element->getFirstElementChild();
+
+	if (NULL != element &&
+		0 == strcmp("Name", xercesc::XMLString::transcode(element->getTagName()))) {
+		component_name = xercesc::XMLString::transcode(element->getTextContent());
+
+		component_->SetName(component_name.c_str());
+	}
+
+	// 生成ID
+	std::string component_id(id);
+	component_id += component_name;
+	component_->SetID(component_id.c_str());
+
+	// 解析SubComponents
+	std::vector<vaar_data::Component*>* sub_components = new std::vector<vaar_data::Component*>();
+	element = element->getNextElementSibling();
+	if (NULL != element &&
+		0 == strcmp("SubComponents", xercesc::XMLString::transcode(element->getTagName()))) {
+
+		ComponentInputDecorator* component_input_decorator = NULL;
+		int sub_component_index = 0;
+		vaar_data::Component* sub_component = NULL;
+
+		current_element = element->getFirstElementChild();
+		do {
+			if (NULL == current_element)
+				break;
+
+			// 分配SubComponent的ID
+			std::string sub_component_id = component_id;
+			sub_component_id += "_sub" + sub_component_index;
+			++sub_component_index;
+
+			component_input_decorator = new ComponentInputDecorator(vertices_, normals_, component_parent_map_);
+			component_input_decorator->Parse(sub_component_id.c_str(), current_element);
+			sub_component = component_input_decorator->GetComponent();
+
+			if (NULL != sub_component) {
+				sub_components->push_back(sub_component);
+				// 建立SubComponentID到Component的映射关系
+				component_parent_map_->insert(
+					std::pair<std::string, vaar_data::Component*>(sub_component_id, component_.get())
+				);
+			}
+		} while (
+			current_element != element->getLastElementChild(),
+			current_element = current_element->getNextElementSibling()
+		);
+	}
+	component_->SetSubComponents(sub_components);
+
+	// 解析Faces
+	std::vector<vaar_data::Face*>* faces = new std::vector<vaar_data::Face*>();
+	element = element->getNextElementSibling();
+	element = element->getNextElementSibling();
+	element = element->getNextElementSibling();
+
+	if (NULL != element &&
+		0 == strcmp("Bodies", xercesc::XMLString::transcode(element->getTagName()))) {
+		
+		FaceInputDecorator* face_input_decorator = NULL;
+		vaar_data::Face* face =NULL;
+
+		list = element->getElementsByTagName(xercesc::XMLString::transcode("SWFace"));
+		if (NULL != list) {
+			for (XMLSize_t i = 0; i < list->getLength(); ++i) {
+				current_element = dynamic_cast<xercesc::DOMElement*>(list->item(i));
+
+				// 分配Face的ID
+				std::string face_id = component_id;
+				face_id += "_face" + i;
+
+				face_input_decorator = new FaceInputDecorator();
+				face_input_decorator->Parse(face_id.c_str(), current_element);
+				face = face_input_decorator->GetFace();
+
+				if (NULL != face) {
+					faces->push_back(face);
+					// 建立SubFaceID到Component的映射关系
+					component_parent_map_->insert(
+						std::pair<std::string, vaar_data::Component*>(face_id, component_.get())
+					);
+				}
+			}
+		}
+	}
+	component_->SetFaces(faces);
+
+	// 解析Edges
+	std::vector<vaar_data::Edge*>* edges = new std::vector<vaar_data::Edge*>();
+	EdgeInputDecorator* edge_input_decorator = NULL;
+	vaar_data::Edge* edge = NULL;
+
+	list = element->getElementsByTagName(xercesc::XMLString::transcode("SWEdge"));
+	if (NULL != list) {
+		for (XMLSize_t i = 0; i < list->getLength(); ++i) {
+			current_element = dynamic_cast<xercesc::DOMElement*>(list->item(i));
+
+			// 分配Edge的ID
+			std::string edge_id = component_id;
+			edge_id += "_edge" + i;
+
+			edge_input_decorator = new EdgeInputDecorator();
+			edge_input_decorator->Parse(edge_id.c_str(), current_element);
+			edge = edge_input_decorator->GetEdge();
+
+			if (NULL != edge) {
+				edges->push_back(edge);
+				// 建立SubEdgeID到Component的映射关系
+				component_parent_map_->insert(
+					std::pair<std::string, vaar_data::Component*>(edge_id, component_.get())
+				);
+			}
+		}
+	}
+	component_->SetEdges(edges);
+
+	// 解析Vertices
+	std::vector<vaar_data::Vertex*>* vertices = new std::vector<vaar_data::Vertex*>();
+	VertexInputDecorator* vertex_input_decorator = NULL;
+	vaar_data::Vertex* vertex = NULL;
+
+	list = element->getElementsByTagName(xercesc::XMLString::transcode("SWVertex"));
+	if (NULL != list) {
+		for (XMLSize_t i = 0; i < list->getLength(); ++i) {
+			current_element = dynamic_cast<xercesc::DOMElement*>(list->item(i));
+
+			// 分配Vertex的ID
+			std::string vertex_id = component_id;
+			vertex_id += "_vertex" + i;
+
+			vertex_input_decorator = new VertexInputDecorator();
+			vertex_input_decorator->Parse(vertex_id.c_str(), current_element);
+			vertex = vertex_input_decorator->GetVertex();
+
+			if (NULL != vertex) {
+				vertices->push_back(vertex);
+				// 建立SubVertexID到Component的映射关系
+				component_parent_map_->insert(
+					std::pair<std::string, vaar_data::Component*>(vertex_id, component_.get())
+				);
+			}
+		}
+	}
+	component_->SetVertices(vertices);
+
 }
 
 // 返回

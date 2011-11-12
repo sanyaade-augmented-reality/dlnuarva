@@ -24,6 +24,7 @@
 #define FILEREADER_DATAMODELINPUTDECORATOR_COMPONENT_INPUT_DECORATOR_H_
 
 #include <memory>
+#include <hash_map>
 
 #include <osg/ref_ptr>
 #include <osg/Array>
@@ -38,9 +39,13 @@ class ComponentInputDecorator : public InputDecorator{
 
 public:
 	// 构造函数和析构函数
-	ComponentInputDecorator(osg::ref_ptr<osg::Vec3Array> vertices, osg::ref_ptr<osg::Vec3Array> normals) {
+	ComponentInputDecorator(
+		osg::ref_ptr<osg::Vec3Array>& vertices, 
+		osg::ref_ptr<osg::Vec3Array>& normals,
+		std::tr1::shared_ptr<std::hash_map<std::string, vaar_data::Component*>>& component_parent_map) {
 		vertices_ = vertices;
 		normals_ = normals;
+		component_parent_map_ = component_parent_map;
 	}
 	ComponentInputDecorator() {}
 	~ComponentInputDecorator() {}
@@ -56,6 +61,8 @@ private:
 	osg::ref_ptr<osg::Vec3Array> vertices_;
 	// 三角顶点法向量列表句柄
 	osg::ref_ptr<osg::Vec3Array> normals_;
+	// ComponentID, EdgeID, VertexID, FaceID到父节点的映射关系
+	std::tr1::shared_ptr<std::hash_map<std::string, vaar_data::Component*>> component_parent_map_;
 
 }; // class ComponentInputDecorator
 

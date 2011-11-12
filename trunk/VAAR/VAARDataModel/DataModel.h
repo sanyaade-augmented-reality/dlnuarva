@@ -49,7 +49,7 @@ public:
 			  std::vector<Mate*>* mates,
 			  osg::Vec3Array* triangles,
 			  osg::Vec3Array* normals,
-			  std::hash_map<char*, Component*>* relation_map) {
+			  std::hash_map<std::string, Component*>* relation_map) {
 		SetRoot(root);
 		SetMates(mates);
 		SetTriangles(triangles);
@@ -89,10 +89,10 @@ public:
 		return triangle_normals_.get();
 	}
 
-	void SetRelation(std::hash_map<char*, Component*>* relation_map) {
-		component_parent_map_ = std::tr1::shared_ptr<std::hash_map<char*, Component*>>(relation_map);
+	void SetRelation(std::hash_map<std::string, Component*>* relation_map) {
+		component_parent_map_ = std::tr1::shared_ptr<std::hash_map<std::string, Component*>>(relation_map);
 	}
-	std::hash_map<char*, Component*>* GetRelation() {
+	std::hash_map<std::string, Component*>* GetRelation() {
 		return component_parent_map_.get();
 	}
 
@@ -106,7 +106,7 @@ private:
 	// 三角面片顶点法向量列表
 	osg::ref_ptr<osg::Vec3Array> triangle_normals_;
 	// ComponentID, EdgeID, VertexID, FaceID到父节点的映射关系
-	std::tr1::shared_ptr<std::hash_map<char*, Component*>> component_parent_map_;
+	std::tr1::shared_ptr<std::hash_map<std::string, Component*>> component_parent_map_;
 	// 其它映射关系
 
 }; // class DataModel
