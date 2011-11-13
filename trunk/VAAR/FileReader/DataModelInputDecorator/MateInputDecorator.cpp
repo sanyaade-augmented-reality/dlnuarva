@@ -39,6 +39,7 @@ void MateInputDecorator::Parse(const char* id, xercesc::DOMElement* element) {
 	if (NULL == id || NULL == element)
 		return;
 
+	char index[255];
 	mate_ = std::tr1::shared_ptr<vaar_data::Mate>(new vaar_data::Mate());
 
 	// ID
@@ -79,7 +80,7 @@ void MateInputDecorator::Parse(const char* id, xercesc::DOMElement* element) {
 			"%lf",
 			&min_variation
 			);
-		mate_->SetMaxVariation(min_variation);
+		mate_->SetMinVariation(min_variation);
 	}
 
 	// ½âÎöFlipped
@@ -107,7 +108,7 @@ void MateInputDecorator::Parse(const char* id, xercesc::DOMElement* element) {
 		MateEntityInputDecorator* mate_entity_input_decorator = NULL;
 		xercesc::DOMElement* current_element = NULL;
 		xercesc::DOMNodeList* list = 
-			element->getElementsByTagName(xercesc::XMLString::transcode("SWEntities"));
+			element->getElementsByTagName(xercesc::XMLString::transcode("SWMateEntity"));
 
 		if (NULL != list) {
 			for (XMLSize_t i = 0; i < list->getLength(); ++i) {
@@ -115,7 +116,9 @@ void MateInputDecorator::Parse(const char* id, xercesc::DOMElement* element) {
 
 				// ·ÖÅäSubMateEntityµÄID
 				std::string sub_mate_entity_id(id);
-				sub_mate_entity_id += "_entity" + i;
+				_itoa_s(i, index, 10);
+				sub_mate_entity_id += "_entity";
+				sub_mate_entity_id += index;
 
 				mate_entity_input_decorator = new MateEntityInputDecorator();
 				mate_entity_input_decorator->Parse(sub_mate_entity_id.c_str(), current_element);

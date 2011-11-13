@@ -32,31 +32,12 @@
 
 #include "XMLReader.h"
 #include "StrX.h"
-#include "DataModelInputDecorator/InputDecorator.h"
-#include "DataModelInputDecorator/VertexInputDecorator.h"
-#include "DataModelInputDecorator/CurveInputDecorator.h"
-#include "DataModelInputDecorator/EdgeInputDecorator.h"
-#include "DataModelInputDecorator/SurfaceInputDecorator.h"
-#include "DataModelInputDecorator/FaceInputDecorator.h"
+#include "DataModelInputDecorator/DataModelInputDecorator.h"
 
 namespace vaar_file {
-// 
-// void Traverse(xercesc::DOMElement *element) {
-// 	if (NULL == element)
-// 		return;
-// 
-// 	std::cout << StrX(element->getTagName()) << "\n";
-// 
-// 	Traverse(element->getFirstElementChild());
-// 
-// 	element = element->getNextElementSibling();
-// 	while (NULL != element) {
-// 		Traverse(element);
-// 		element = element->getNextElementSibling();
-// 	}
-// }
 
-__declspec(dllexport) void XMLReader::Read(const char* file_path) {
+// 传入文件路径，返回DataModel对象
+__declspec(dllexport) void XMLReader::Read(const char* file_path, vaar_data::DataModel& data_model) {
 	try {
 		// 初始化xerces
 		xercesc::XMLPlatformUtils::Initialize();
@@ -86,7 +67,7 @@ __declspec(dllexport) void XMLReader::Read(const char* file_path) {
 			return;
 		}
 
-		// get element.
+		// 获取Root element.
 		xercesc::DOMElement* element = document->getDocumentElement();
 		if (NULL == document) {
 			parser->adoptDocument();
@@ -95,128 +76,9 @@ __declspec(dllexport) void XMLReader::Read(const char* file_path) {
 			return;
 		}
 
-		xercesc::DOMNodeList* list = element->getElementsByTagName(xercesc::XMLString::transcode("SubComponents"));
-		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
-		list = element->getElementsByTagName(xercesc::XMLString::transcode("SWComponent"));
-		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
-		list = element->getElementsByTagName(xercesc::XMLString::transcode("Bodies"));
-		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
-
-		/* Test VertexInputDecorator
-		list = element->getElementsByTagName(xercesc::XMLString::transcode("SWVertex"));
-		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
-		*/
-
-		/* Test CurveInputDecorator
-		list = element->getElementsByTagName(xercesc::XMLString::transcode("Curve"));
-		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
-		*/
-
-		/* Test EdgeInputDecoratorTest
-		list = element->getElementsByTagName(xercesc::XMLString::transcode("SWEdge"));
-		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
-		*/
-
-		/* Test SurfaceInputDecoratorTest
-		list = element->getElementsByTagName(xercesc::XMLString::transcode("Surface"));
-		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
-		*/ 
-
-		/* Test FaceInputDecoratorTest
-		list = element->getElementsByTagName(xercesc::XMLString::transcode("SWFace"));
-		element = dynamic_cast<xercesc::DOMElement*>(list->item(0));
-		
-		std::cout << StrX(element->getTagName()) << "\n";
-		std::cout << StrX(element->getTextContent()) << "\n";
-		*/
-
-		/* Test VertexInputDecorator
-		VertexInputDecorator* input = new VertexInputDecorator();
-		input->Parse("", element);
-		vaar_data::Vertex* vertex = input->GetVertex();
-
-		std::cout << vertex->GetX() << "\n";
-		std::cout << vertex->GetY() << "\n";
-		std::cout << vertex->GetZ() << "\n";
-		*/
-
-		/* Test CurveInputDecorator
-		CurveInputDecorator* input = new CurveInputDecorator();
-		input->Parse("", element);
-		vaar_data::Curve* curve = input->GetCurve();
-
-		int length;
-		const double* params;
-		std::cout << curve->GetCurveType() << "\n";
-		params = curve->GetParams(length);
-
-		for (int i = 0; i < length; ++i) {
-			std::cout << params[i] << "\n";
-		}
-		*/
-
-		/* Test EdgeInputDecoratorTest
-		EdgeInputDecorator input;
-		input.Parse("edge01", element);
-		vaar_data::Edge* edge = input.GetEdge();
-		vaar_data::Curve* curve = edge->GetCurve();
-		
-		std::cout << edge->GetID() << "\n";
-		std::cout << curve->GetID() << "\n";
-
-		int length;
-		double* params;
-		std::cout << curve->GetCurveType() << "\n";
-		params = curve->GetParams(length);
-
-		for (int i = 0; i < length; ++i) {
-			std::cout << params[i] << "\n";
-		}
-
-		std::cout << "\n";
-
-		params = edge->GetParams(length);
-
-		for (int i = 0; i < length; ++i) {
-			std::cout << params[i] << "\n";
-		}
-		*/
-
-		/* Test SurfaceInputDecorator
-		SurfaceInputDecorator input;
-		input.Parse("test", element);
-		vaar_data::Surface* surface = input.GetSurface();
-
-		std::cout << surface->GetID() << "\n";
-		int length;
-		double* params;
-		std::cout << surface->GetSurfaceType() << "\n";
-		params = surface->GetParams(length);
-		for (int i = 0; i < length; ++i) {
-			std::cout << params[i] << "\n";
-		}
-		*/
-
-		// Test FaceInputDecorator
-		osg::ref_ptr<osg::Vec3Array> triangles = new osg::Vec3Array;
-		osg::ref_ptr<osg::Vec3Array> normals = new osg::Vec3Array;
-		FaceInputDecorator input(triangles, normals);
-		input.Parse("face01", element);
-		vaar_data::Face* face = input.GetFace();
-		vaar_data::Surface* surface = face->GetSurface();
-
-		// Output Surface
-		std::cout << surface->GetID() << "\n";
-		int length;
-		double* params;
-		std::cout << surface->GetSurfaceType() << "\n";
-		params = surface->GetParams(length);
-		for (int i = 0; i < length; ++i) {
-			std::cout << params[i] << "\n";
-		}
-
-		// Output Face
-		std::cout << face->GetID() << "\n";
+		input_ = new DataModelInputDecorator();
+		input_->Parse("", element);
+		data_model = *input_->GetDataModel();
 
 		parser->adoptDocument();
 		delete document;
@@ -230,9 +92,9 @@ __declspec(dllexport) void XMLReader::Read(const char* file_path) {
 		std::cerr << "Exception message is: \n"
 			<< StrX(toCatch.getMessage()) << "\n";
 		return;
-	}
+	} // try
 	
 	xercesc::XMLPlatformUtils::Terminate();
-};
+}; //Read
 
 } // namespace vaar_file

@@ -57,11 +57,8 @@ void FaceInputDecorator::Parse(const char* id, xercesc::DOMElement* element) {
 
 	// ½âÎöTessTriangles
 	element = element->getFirstElementChild();
-	std::cout << StrX(element->getTagName()) << "\n";
 	element = element->getNextElementSibling();
-	std::cout << StrX(element->getTagName()) << "\n";
 	element = element->getNextElementSibling();
-	std::cout << StrX(element->getTagName()) << "\n";
 	
 	if (NULL != element &&
 		0 == strcmp("TessTriangles", xercesc::XMLString::transcode(element->getTagName()))) {

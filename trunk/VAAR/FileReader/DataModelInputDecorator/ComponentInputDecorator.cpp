@@ -20,6 +20,8 @@
 // 修改历史：
 ///////////////////////////////////////////////////////////////////////////
 
+#include <cstdlib>
+
 #include <xercesc/util/XMLString.hpp>
 #include <xercesc/dom/DOMNodeList.hpp>
 
@@ -51,9 +53,10 @@ void ComponentInputDecorator::Parse(const char* id, xercesc::DOMElement* element
 	//if (NULL == element || !vertices_.valid() || !normals_.valid() || NULL == component_parent_map_.get())
 	//	return;
 
-	if (NULL == id || NULL == element || NULL == component_parent_map_.get())
+	if (NULL == id || NULL == element || NULL == component_parent_map_)
 		return;
 
+	char index[255];
 	xercesc::DOMElement* current_element =NULL;
 	xercesc::DOMNodeList* list = NULL;
 	component_ = std::tr1::shared_ptr<vaar_data::Component>(new vaar_data::Component);
@@ -91,7 +94,10 @@ void ComponentInputDecorator::Parse(const char* id, xercesc::DOMElement* element
 
 			// 分配SubComponent的ID
 			std::string sub_component_id = component_id;
-			sub_component_id += "_sub" + sub_component_index;
+			
+			_itoa_s(sub_component_index, index, 10);
+			sub_component_id += "_sub";
+			sub_component_id += index;
 			++sub_component_index;
 
 			//component_input_decorator = new ComponentInputDecorator(vertices_, normals_, component_parent_map_);
@@ -132,7 +138,10 @@ void ComponentInputDecorator::Parse(const char* id, xercesc::DOMElement* element
 
 				// 分配Face的ID
 				std::string face_id = component_id;
-				face_id += "_face" + i;
+
+				_itoa_s(i, index, 10);
+				face_id += "_face";
+				face_id += index;
 
 				//face_input_decorator = new FaceInputDecorator();
 				face_input_decorator = new FaceInputDecorator(
@@ -166,7 +175,9 @@ void ComponentInputDecorator::Parse(const char* id, xercesc::DOMElement* element
 
 			// 分配Edge的ID
 			std::string edge_id = component_id;
-			edge_id += "_edge" + i;
+			_itoa_s(i, index, 10);
+			edge_id += "_edge";
+			edge_id += index;
 
 			edge_input_decorator = new EdgeInputDecorator();
 			edge_input_decorator->Parse(edge_id.c_str(), current_element);
@@ -195,7 +206,9 @@ void ComponentInputDecorator::Parse(const char* id, xercesc::DOMElement* element
 
 			// 分配Vertex的ID
 			std::string vertex_id = component_id;
-			vertex_id += "_vertex" + i;
+			_itoa_s(i, index, 10);
+			vertex_id += "_vertex";
+			vertex_id += index;
 
 			vertex_input_decorator = new VertexInputDecorator();
 			vertex_input_decorator->Parse(vertex_id.c_str(), current_element);

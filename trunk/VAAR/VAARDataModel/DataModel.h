@@ -56,7 +56,12 @@ public:
 		//SetNormals(normals);
 		SetRelation(relation_map);
 	}
-	~DataModel(){}
+	~DataModel(){
+		/*
+		if (NULL != component_parent_map_)
+			delete component_parent_map_;
+		*/
+	}
 
 	// getter and setter
 	// 设置装配模型树
@@ -91,26 +96,33 @@ public:
 	*/
 
 	void SetRelation(std::hash_map<std::string, Component*>* relation_map) {
+		//component_parent_map_ = new std::hash_map<std::string, Component*>(*relation_map);
 		component_parent_map_ = std::tr1::shared_ptr<std::hash_map<std::string, Component*>>(relation_map);
 	}
 	std::hash_map<std::string, Component*>* GetRelation() {
 		return component_parent_map_.get();
+		//return component_parent_map_;
 	}
-
+	
 	std::tr1::shared_ptr<std::hash_map<std::string, Component*>> GetRefRelation() {
 		return component_parent_map_;
 	}
+	
 private:
 	// 装配数据模型的根节点（树形拓扑结构）
 	std::tr1::shared_ptr<Component> root_;
 	// 配合列表
 	std::tr1::shared_ptr<std::vector<Mate*>> mates_;
+	
 	// 三角面片顶点列表
 	//osg::ref_ptr<osg::Vec3Array> triangle_vertices_;
 	// 三角面片顶点法向量列表
 	//osg::ref_ptr<osg::Vec3Array> triangle_normals_;
+	
 	// ComponentID, EdgeID, VertexID, FaceID到父节点的映射关系
 	std::tr1::shared_ptr<std::hash_map<std::string, Component*>> component_parent_map_;
+	//std::hash_map<std::string, Component*>* component_parent_map_;
+	
 	// 其它映射关系
 
 }; // class DataModel

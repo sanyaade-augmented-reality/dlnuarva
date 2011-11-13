@@ -42,6 +42,7 @@ public:
 	ComponentInputDecorator(
 		//osg::ref_ptr<osg::Vec3Array>& vertices, 
 		//osg::ref_ptr<osg::Vec3Array>& normals,
+		//std::hash_map<std::string, vaar_data::Component*>* component_parent_map
 		std::tr1::shared_ptr<std::hash_map<std::string, vaar_data::Component*>>& component_parent_map) {
 		//vertices_ = vertices;
 		//normals_ = normals;
@@ -57,12 +58,15 @@ public:
 private:
 	// 操作句柄
 	std::tr1::shared_ptr<vaar_data::Component> component_;
+	
 	// 三角顶点列表句柄
 	//osg::ref_ptr<osg::Vec3Array> vertices_;
 	// 三角顶点法向量列表句柄
 	//osg::ref_ptr<osg::Vec3Array> normals_;
+	
 	// ComponentID, EdgeID, VertexID, FaceID到父节点的映射关系
 	std::tr1::shared_ptr<std::hash_map<std::string, vaar_data::Component*>> component_parent_map_;
+	//std::hash_map<std::string, vaar_data::Component*>* component_parent_map_;
 
 }; // class ComponentInputDecorator
 

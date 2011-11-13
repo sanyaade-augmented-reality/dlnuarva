@@ -23,11 +23,15 @@
 #ifndef FILEREADER_FILEREADER_H_
 #define FILEREADER_FILEREADER_H_
 
+#include "../VAARDataModel/DataModel.h"
+
 namespace vaar_file {
 
+// 定义了装配文件的读取接口
 class FileReader {
 public:
-	virtual __declspec(dllexport) void Read(const char* file_path) = 0;
+	// 传入文件路径，返回DataModel对象
+	virtual __declspec(dllexport) void Read(const char* file_path, vaar_data::DataModel& data_model) = 0;
 };
 
 } // namespace vaar_file

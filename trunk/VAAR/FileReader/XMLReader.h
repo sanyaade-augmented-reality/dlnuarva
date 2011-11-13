@@ -24,14 +24,30 @@
 #define FILEREADER_XMLREADER_H_
 
 #include "FileReader.h"
-#include "..\VAARDataModel\VAARDataModel.h"
+#include "DataModelInputDecorator/DataModelInputDecorator.h"
 
 namespace vaar_file {
 
 //负责读取XML文件的类
 class XMLReader : public FileReader {
+
 public:
-	virtual __declspec(dllexport) void Read(const char* file_path);
+	// 构造函数和析构函数
+	XMLReader() {
+		input_ = NULL;
+	}
+	~XMLReader() {
+		if (NULL != input_)
+			delete input_;
+	}
+
+	// 传入文件路径，返回DataModel对象
+	virtual __declspec(dllexport) void Read(const char* file_path, vaar_data::DataModel& data_model);
+
+private:
+	// input
+	DataModelInputDecorator* input_;
+
 };
 
 } // namespace vaar_file

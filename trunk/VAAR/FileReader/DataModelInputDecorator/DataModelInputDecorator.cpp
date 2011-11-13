@@ -43,9 +43,9 @@ void DataModelInputDecorator::Parse(const char* id, xercesc::DOMElement* element
 	if (NULL == element)
 		return;
 
+	char index[255];
 	xercesc::DOMElement* current_element = NULL;
-	data_model_ = std::shared_ptr<vaar_data::DataModel>();
-	
+	data_model_ = std::shared_ptr<vaar_data::DataModel>(new vaar_data::DataModel());
 	
 	std::hash_map<std::string, vaar_data::Component*>* component_parent_map = 
 		new std::hash_map<std::string, vaar_data::Component*>();
@@ -69,7 +69,8 @@ void DataModelInputDecorator::Parse(const char* id, xercesc::DOMElement* element
 
 			// ∑÷≈‰MateID
 			std::string mate_id("mate");
-			mate_id += i;
+			_itoa_s(i, index, 10);
+			mate_id += index;
 
 			// Ω‚ŒˆSWMate
 			mate_input = new MateInputDecorator();
