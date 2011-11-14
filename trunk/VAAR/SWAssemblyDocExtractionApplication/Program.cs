@@ -92,11 +92,12 @@ namespace SWAssemblyDocExtractionApplication {
 
             //继续遍历
             object[] subComponents = component.GetChildren();
-
-            foreach (object obj in subComponents) {
-                SWComponent newComponent = new SWComponent();
-                CreateTree((Component2)obj, ref newComponent);
-                swComponent.SubComponents.Add(newComponent);
+            if (subComponents != null) { 
+                foreach (object obj in subComponents) {
+                    SWComponent newComponent = new SWComponent();
+                    CreateTree((Component2)obj, ref newComponent);
+                    swComponent.SubComponents.Add(newComponent);
+                }
             }
         }
 
