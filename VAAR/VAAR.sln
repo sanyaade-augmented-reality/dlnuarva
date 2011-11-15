@@ -9,6 +9,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VAARDataModel", "VAARDataMo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FileReader", "FileReader\FileReader.vcxproj", "{4D09661E-36E1-4431-92AF-476340F96DA1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AR", "AR\AR.vcxproj", "{B7EB8502-153F-462F-8394-35E3D7C6412C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ARMarkerCreator", "ARMarkerCreator\ARMarkerCreator.vcxproj", "{8078A122-0D16-40C1-9609-CBC4DB9DA97D}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -63,6 +67,26 @@ Global
 		{4D09661E-36E1-4431-92AF-476340F96DA1}.Release|Win32.ActiveCfg = Release|Win32
 		{4D09661E-36E1-4431-92AF-476340F96DA1}.Release|Win32.Build.0 = Release|Win32
 		{4D09661E-36E1-4431-92AF-476340F96DA1}.Release|x86.ActiveCfg = Release|Win32
+		{B7EB8502-153F-462F-8394-35E3D7C6412C}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{B7EB8502-153F-462F-8394-35E3D7C6412C}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{B7EB8502-153F-462F-8394-35E3D7C6412C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B7EB8502-153F-462F-8394-35E3D7C6412C}.Debug|Win32.Build.0 = Debug|Win32
+		{B7EB8502-153F-462F-8394-35E3D7C6412C}.Debug|x86.ActiveCfg = Debug|Win32
+		{B7EB8502-153F-462F-8394-35E3D7C6412C}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{B7EB8502-153F-462F-8394-35E3D7C6412C}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{B7EB8502-153F-462F-8394-35E3D7C6412C}.Release|Win32.ActiveCfg = Release|Win32
+		{B7EB8502-153F-462F-8394-35E3D7C6412C}.Release|Win32.Build.0 = Release|Win32
+		{B7EB8502-153F-462F-8394-35E3D7C6412C}.Release|x86.ActiveCfg = Release|Win32
+		{8078A122-0D16-40C1-9609-CBC4DB9DA97D}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{8078A122-0D16-40C1-9609-CBC4DB9DA97D}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{8078A122-0D16-40C1-9609-CBC4DB9DA97D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8078A122-0D16-40C1-9609-CBC4DB9DA97D}.Debug|Win32.Build.0 = Debug|Win32
+		{8078A122-0D16-40C1-9609-CBC4DB9DA97D}.Debug|x86.ActiveCfg = Debug|Win32
+		{8078A122-0D16-40C1-9609-CBC4DB9DA97D}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{8078A122-0D16-40C1-9609-CBC4DB9DA97D}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{8078A122-0D16-40C1-9609-CBC4DB9DA97D}.Release|Win32.ActiveCfg = Release|Win32
+		{8078A122-0D16-40C1-9609-CBC4DB9DA97D}.Release|Win32.Build.0 = Release|Win32
+		{8078A122-0D16-40C1-9609-CBC4DB9DA97D}.Release|x86.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
