@@ -18,18 +18,18 @@ public:
 
   /**
     */
-    BoardConfiguration();
+    __declspec(dllexport) BoardConfiguration();
 
     /**
     */
-    BoardConfiguration(const BoardConfiguration  &T);
+    __declspec(dllexport) BoardConfiguration(const BoardConfiguration  &T);
 
     /**Saves the board info to a file
     */
-    void saveToFile(string sfile)throw (cv::Exception);
+    __declspec(dllexport) void saveToFile(string sfile)throw (cv::Exception);
     /**Reads board info from a file
     */
-    void readFromFile(string sfile)throw (cv::Exception);
+    __declspec(dllexport) void readFromFile(string sfile)throw (cv::Exception);
 
 };
 
@@ -44,7 +44,7 @@ public:
     float markerSizeMeters;
     /**
     */
-    Board()
+    __declspec(dllexport) Board()
     {
         Rvec.create(3,1,CV_32FC1);
         Tvec.create(3,1,CV_32FC1);
@@ -56,12 +56,12 @@ public:
     /**Given the extrinsic camera parameters returns the GL_MODELVIEW matrix for opengl.
     * Setting this matrix, the reference corrdinate system will be set in this board
      */
-    void glGetModelViewMatrix(double modelview_matrix[16])throw(cv::Exception);
+    __declspec(dllexport) void glGetModelViewMatrix(double modelview_matrix[16])throw(cv::Exception);
 
     /**Creates a printable image of the board
      */
 
-    static cv::Mat createBoardImage( cv::Size  gridSize,int MarkerSize,int MarkerDistance,unsigned int FirstMarkerID, BoardConfiguration& TInfo  ) throw (cv::Exception);
+    __declspec(dllexport) static cv::Mat createBoardImage( cv::Size  gridSize,int MarkerSize,int MarkerDistance,unsigned int FirstMarkerID, BoardConfiguration& TInfo  ) throw (cv::Exception);
 
 
 };
