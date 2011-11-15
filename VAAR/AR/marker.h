@@ -22,47 +22,47 @@ public:
 
     /**
      */
-    Marker();
+    __declspec(dllexport) Marker();
     /**
      */
-    Marker(const Marker &M);
+    __declspec(dllexport) Marker(const Marker &M);
     /**
      */
-    ~Marker() {}
+    __declspec(dllexport) ~Marker() {}
     /**Indicates if this object is valid
      */
-    bool isValid()const{return id!=-1 && size()==4;}
+    __declspec(dllexport) bool isValid()const{return id!=-1 && size()==4;}
 
     /**Draws this marker in the input image
      */
-    void draw(cv::Mat &in, cv::Scalar color, int lineWidth=1,bool writeId=true);
+    __declspec(dllexport) void draw(cv::Mat &in, cv::Scalar color, int lineWidth=1,bool writeId=true);
 
     /**Calculates the extrinsics (Rvec and Tvec) of the marker with respect to the camera
      * @param markerSize size of the marker side expressed in meters
      * @param CP parmeters of the camera
      */
-    void calculateExtrinsics(float markerSize,const CameraParameters &CP)throw(cv::Exception);
+    __declspec(dllexport) void calculateExtrinsics(float markerSize,const CameraParameters &CP)throw(cv::Exception);
     /**Calculates the extrinsics (Rvec and Tvec) of the marker with respect to the camera
      * @param markerSize size of the marker side expressed in meters
      * @param CameraMatrix matrix with camera parameters (fx,fy,cx,cy)
      * @param Distorsion matrix with distorsion parameters (k1,k2,p1,p2)
      */
-    void calculateExtrinsics(float markerSize,cv::Mat  CameraMatrix,cv::Mat Distorsion=cv::Mat())throw(cv::Exception);
+    __declspec(dllexport) void calculateExtrinsics(float markerSize,cv::Mat  CameraMatrix,cv::Mat Distorsion=cv::Mat())throw(cv::Exception);
     
     /**Given the extrinsic camera parameters returns the GL_MODELVIEW matrix for opengl.
      * Setting this matrix, the reference coordinate system will be set in this marker
      */
-    void glGetModelViewMatrix(  double modelview_matrix[16])throw(cv::Exception);
+    __declspec(dllexport) void glGetModelViewMatrix(  double modelview_matrix[16])throw(cv::Exception);
 
     /**
      */
-    friend bool operator<(const Marker &M1,const Marker&M2)
+    __declspec(dllexport) friend bool operator<(const Marker &M1,const Marker&M2)
     {
         return M1.id<M2.id;
     }
     /**
      */
-    friend ostream & operator<<(ostream &str,const Marker &M)
+    __declspec(dllexport) friend ostream & operator<<(ostream &str,const Marker &M)
     {
         str<<M.id<<"=";
         for (int i=0;i<4;i++)

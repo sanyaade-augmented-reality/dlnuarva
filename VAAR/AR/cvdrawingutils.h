@@ -10,13 +10,13 @@ namespace aruco
   {
   public:
     
-    static void draw3dAxis(cv::Mat &Image,Marker &m,CameraParameters &CP);
+    __declspec(dllexport) static void draw3dAxis(cv::Mat &Image,Marker &m,CameraParameters &CP);
     
-    static void draw3dCube(cv::Mat &Image,Marker &m,CameraParameters &CP);
+    __declspec(dllexport) static void draw3dCube(cv::Mat &Image,Marker &m,CameraParameters &CP);
     
-    static void draw3dAxis(cv::Mat &Image,Board &m,CameraParameters &CP);
+    __declspec(dllexport) static void draw3dAxis(cv::Mat &Image,Board &m,CameraParameters &CP);
     
-    static void draw3dCube(cv::Mat &Image,Board &m,CameraParameters &CP);
+    __declspec(dllexport) static void draw3dCube(cv::Mat &Image,Board &m,CameraParameters &CP);
 
   };
 };

@@ -25,10 +25,10 @@ public:
     * @param markerSizeMeters size of the marker sides expressed in meters
     * @return value indicating  the  likelihood of having found the marker
     */
-    float detect(const vector<Marker> &detectedMarkers,const  BoardConfiguration &BConf, Board &Bdetected, Mat camMatrix=Mat(),Mat distCoeff=Mat(), float markerSizeMeters=-1 )throw (cv::Exception);
-    float detect(const vector<Marker> &detectedMarkers,const  BoardConfiguration &BConf, Board &Bdetected, CameraParameters cp, float markerSizeMeters=-1 )throw (cv::Exception);
+    __declspec(dllexport) float detect(const vector<Marker> &detectedMarkers,const  BoardConfiguration &BConf, Board &Bdetected, Mat camMatrix=Mat(),Mat distCoeff=Mat(), float markerSizeMeters=-1 )throw (cv::Exception);
+    __declspec(dllexport) float detect(const vector<Marker> &detectedMarkers,const  BoardConfiguration &BConf, Board &Bdetected, CameraParameters cp, float markerSizeMeters=-1 )throw (cv::Exception);
 private:
-    void rotateXAxis(Mat &rotation);
+    __declspec(dllexport) void rotateXAxis(Mat &rotation);
 };
 
 };

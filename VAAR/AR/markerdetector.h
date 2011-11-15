@@ -20,11 +20,11 @@ public:
 
     /**
      */
-    MarkerDetector();
+    __declspec(dllexport) MarkerDetector();
 
     /**
      */
-    ~MarkerDetector();
+    __declspec(dllexport) ~MarkerDetector();
 
     /**Detects the markers in the image passed
      *
@@ -36,7 +36,7 @@ public:
      * @param distCoeff camera distorsion coefficient. If set Mat() if is assumed no camera distorion
      * @param markerSizeMeters size of the marker sides expressed in meters
      */
-    void detect(cv::Mat &input,std::vector<Marker> &detectedMarkers,cv::Mat camMatrix=cv::Mat(),cv::Mat distCoeff=cv::Mat(),float markerSizeMeters=-1) throw (cv::Exception);
+    __declspec(dllexport) void detect(cv::Mat &input,std::vector<Marker> &detectedMarkers,cv::Mat camMatrix=cv::Mat(),cv::Mat distCoeff=cv::Mat(),float markerSizeMeters=-1) throw (cv::Exception);
     /**Detects the markers in the image passed
      *
      * If you provide information about the camera parameters and the size of the marker, then, the extrinsics of the markers are detected
@@ -46,7 +46,7 @@ public:
      * @param camParams Camera parameters
      * @param markerSizeMeters size of the marker sides expressed in meters
      */
-    void detect(cv::Mat &input,std::vector<Marker> &detectedMarkers, CameraParameters camParams=CameraParameters(),float markerSizeMeters=-1) throw (cv::Exception);
+    __declspec(dllexport) void detect(cv::Mat &input,std::vector<Marker> &detectedMarkers, CameraParameters camParams=CameraParameters(),float markerSizeMeters=-1) throw (cv::Exception);
 
     /**This set the type of thresholding methods available
      */
@@ -55,12 +55,12 @@ public:
 
     /**Sets the threshold method
      */
-    void setThresholdMethod(ThresholdMethods m) {
+    __declspec(dllexport) void setThresholdMethod(ThresholdMethods m) {
         _thresMethod=m;
     }
     /**Returns the current threshold method
      */
-    ThresholdMethods getThresholdMethod()const {
+    __declspec(dllexport) ThresholdMethods getThresholdMethod()const {
         return _thresMethod;
     }
     /**
@@ -69,7 +69,7 @@ public:
      *   @param param1: blockSize of the pixel neighborhood that is used to calculate a threshold value for the pixel
      *   @param param2: The constant subtracted from the mean or weighted mean
      */
-    void setThresholdParams(double param1,double param2) {
+    __declspec(dllexport) void setThresholdParams(double param1,double param2) {
         _thresParam1=param1;
         _thresParam2=param2;
     }
@@ -79,7 +79,7 @@ public:
      *   param1: blockSize of the pixel neighborhood that is used to calculate a threshold value for the pixel
      *   param2: The constant subtracted from the mean or weighted mean
      */
-    void getThresholdParams(double &param1,double &param2)const {
+    __declspec(dllexport) void getThresholdParams(double &param1,double &param2)const {
         param1=_thresParam1;
         param2=_thresParam2;
     }
@@ -88,7 +88,7 @@ public:
     /**Returns a reference to the internal image thresholded. It is for visualization purposes and to adjust manually
      * the parameters
      */
-    cv::Mat & getThresholdedImage() {
+    __declspec(dllexport) cv::Mat & getThresholdedImage() {
         return thres;
     }
 
@@ -104,7 +104,7 @@ public:
      * @param gnear,gfar: visible rendering range
      * @param invert: indicates if the output projection matrix has to yield a horizontally inverted image because image data has not been stored in the order of glDrawPixels: bottom-to-top.
      */
-    static void glGetProjectionMatrix( CameraParameters &  CamMatrix,cv::Size orgImgSize, cv::Size size,double proj_matrix[16],double gnear,double gfar,bool invert=false   )throw(cv::Exception);
+    __declspec(dllexport) static void glGetProjectionMatrix( CameraParameters &  CamMatrix,cv::Size orgImgSize, cv::Size size,double proj_matrix[16],double gnear,double gfar,bool invert=false   )throw(cv::Exception);
 private:
 
     cv::Mat grey,thres,thres2;
