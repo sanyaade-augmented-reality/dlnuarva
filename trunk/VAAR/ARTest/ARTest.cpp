@@ -11,35 +11,38 @@ using namespace aruco;
 
 int main(int argc,char **argv) {
 	try {
-		aruco::CameraParameters CamParam;
-		MarkerDetector MDetector;
-		vector<Marker> Markers;
-		float MarkerSize=-1;
+		aruco::CameraParameters camera_params;
+		MarkerDetector marker_detector;
+		vector<Marker> markers;
+		float marker_size = -1;
 
-		cv::Mat InImage=cv::imread("in.jpg");
-		CamParam.readFromXMLFile("camera.yml");
+		cv::Mat in_image = cv::imread("in.jpg");
+		camera_params.readFromXMLFile("camera.yml");
 
 		//resizes the parameters to fit the size of the input image
-		CamParam.resize( InImage.size());
+		camera_params.resize(in_image.size());
 
-		if (argc>=4) MarkerSize=atof(argv[3]);
+		//if (argc>=4) MarkerSize=atof(argv[3]);
 		cv::namedWindow("in",1);
-		MDetector.detect(InImage,Markers,CamParam,MarkerSize);
+		marker_detector.detect(in_image, markers, camera_params, marker_size);
 		//for each marker, draw info and its boundaries in the image
-		for(unsigned int i=0;i<Markers.size();i++){
-			cout<<Markers[i]<<endl;
-			Markers[i].draw(InImage,Scalar(0,0,255),2);
+		for(unsigned int i=0; i < markers.size(); i++){
+			cout << markers[i] << endl;
+			markers[i].draw(in_image, Scalar(0,0,255), 2);
 		}
 
 		//draw a 3d cube in each marker if there is 3d info
-		if (  CamParam.isValid())
-			for(unsigned int i=0;i<Markers.size();i++){
-				CvDrawingUtils::draw3dCube(InImage,Markers[i],CamParam);
+		if (camera_params.isValid()) {
+			for(unsigned int i=0; i < markers.size(); i++){
+				CvDrawingUtils::draw3dCube(in_image, markers[i], camera_params);
 			}
-			//show input with augmented information
-			cv::imshow("in",InImage);
-			cv::waitKey(0);//wait for key to be pressed
-			if(argc>=5) cv::imwrite(argv[4],InImage);
+		}
+
+		//show input with augmented information
+		cv::imshow("in", in_image);
+		cv::waitKey(0);//wait for key to be pressed
+		cv::imwrite("out.jpg", in_image);
+
 	} catch(std::exception &ex) {
 		std::cout << "Exception :" << ex.what() << std::endl;
 	}
