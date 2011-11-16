@@ -16,8 +16,8 @@ class ChangePositionCallback : public osg::NodeCallback {
 public:
 	ChangePositionCallback() : x_(0.0) {}
 	virtual void operator()(osg::Node* node, osg::NodeVisitor* nv) {
+		
 		osg::MatrixTransform* transform = dynamic_cast<osg::MatrixTransform*>(node);
-
 		if (transform) {
 			transform->setMatrix(osg::Matrix::translate(x_, 0, 0));
 			x_ += 10;

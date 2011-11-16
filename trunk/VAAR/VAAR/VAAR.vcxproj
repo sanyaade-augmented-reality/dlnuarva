@@ -93,6 +93,10 @@
       <Project>{4d09661e-36e1-4431-92af-476340f96da1}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="camera.yml" />
+    <None Include="tutor.xml" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
