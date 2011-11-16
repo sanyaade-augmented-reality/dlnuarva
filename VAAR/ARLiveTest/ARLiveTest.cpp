@@ -9,7 +9,7 @@ aruco::MarkerDetector marker_dector;
 aruco::CameraParameters camera_params;
 vector<aruco::Marker> markers;
 pair<double,double> average_time(0,0);
-float marker_size = -1;
+float marker_size = 0.111;
 double threshold_param1, threshold_param2;
 int i_threshold_param1, i_threshold_param2;
 
