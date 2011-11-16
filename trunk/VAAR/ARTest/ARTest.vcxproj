@@ -83,6 +83,10 @@
       <Project>{b7eb8502-153f-462f-8394-35e3d7c6412c}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="camera.yml" />
+    <None Include="in.jpg" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
