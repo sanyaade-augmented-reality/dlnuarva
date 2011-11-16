@@ -18,7 +18,7 @@ int main(int argc,char **argv) {
 		// 标记数组
 		vector<Marker> markers;
 		// 标记尺寸
-		float marker_size = -1;
+		float marker_size = 0.111;
 
 		// 读取测试图片
 		cv::Mat in_image = cv::imread("in.jpg");
@@ -27,9 +27,6 @@ int main(int argc,char **argv) {
 
 		// 根据图片修改相机参数的尺寸
 		camera_params.resize(in_image.size());
-
-		// 设置标记的尺寸
-		//if (argc>=4) MarkerSize=atof(argv[3]);
 
 		// 注册窗口
 		cv::namedWindow("in",1);
