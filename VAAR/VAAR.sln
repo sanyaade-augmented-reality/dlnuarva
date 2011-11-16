@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CameraClibration", "CameraC
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ARTest", "ARTest\ARTest.vcxproj", "{F5E287CC-430D-42C3-9293-77E5ED22548F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ARLiveTest", "ARLiveTest\ARLiveTest.vcxproj", "{3BB482C9-CBDA-4017-845C-4FDAE184B50C}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -111,6 +113,16 @@ Global
 		{F5E287CC-430D-42C3-9293-77E5ED22548F}.Release|Win32.ActiveCfg = Release|Win32
 		{F5E287CC-430D-42C3-9293-77E5ED22548F}.Release|Win32.Build.0 = Release|Win32
 		{F5E287CC-430D-42C3-9293-77E5ED22548F}.Release|x86.ActiveCfg = Release|Win32
+		{3BB482C9-CBDA-4017-845C-4FDAE184B50C}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{3BB482C9-CBDA-4017-845C-4FDAE184B50C}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{3BB482C9-CBDA-4017-845C-4FDAE184B50C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3BB482C9-CBDA-4017-845C-4FDAE184B50C}.Debug|Win32.Build.0 = Debug|Win32
+		{3BB482C9-CBDA-4017-845C-4FDAE184B50C}.Debug|x86.ActiveCfg = Debug|Win32
+		{3BB482C9-CBDA-4017-845C-4FDAE184B50C}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{3BB482C9-CBDA-4017-845C-4FDAE184B50C}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{3BB482C9-CBDA-4017-845C-4FDAE184B50C}.Release|Win32.ActiveCfg = Release|Win32
+		{3BB482C9-CBDA-4017-845C-4FDAE184B50C}.Release|Win32.Build.0 = Release|Win32
+		{3BB482C9-CBDA-4017-845C-4FDAE184B50C}.Release|x86.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
